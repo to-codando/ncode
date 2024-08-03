@@ -50,6 +50,7 @@ return {
       -- css = {'prettier'},
     -- }
   -- },
+  debuggers = {},
 
   -- plugins = {},
 

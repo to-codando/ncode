@@ -29,6 +29,16 @@ return {
             enabled = false,
           },
         },
+          notify = {
+    -- Exibir mensagens de erro com notify
+    error = true,
+
+    -- Exibir mensagens de aviso com notify
+    warn = true,
+
+    -- Outras mensagens podem ser exibidas com um método padrão
+    info = false,
+  },
       })
     end
   },
@@ -40,6 +50,11 @@ return {
         flavour = "mocha",   -- Escolha o sabor: latte, frappe, macchiato, mocha
         integrations = {
           bufferline = true, -- Habilite a integração com bufferline
+          notify = true,
+          noice = true,
+          which_key = true,
+          dashboard = true,
+          cmp = true,
           dap = {
             enabled = true, -- Habilite a integração com o DAP
             -- Personalize a aparência do DAP aqui

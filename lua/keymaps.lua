@@ -1,68 +1,71 @@
 local utils = require('utils')
-
+local wk = require('which-key')
 local keymaps = {
   -- NvimTree
-  n = {
-    ["<leader>e"] = { rhs = "<cmd>NvimTreeToggle<CR>", desc = "Alternar Explorer" },
-    ["<leader>er"] = { rhs = "<cmd>NvimTreeRename<CR>", desc = "Renomear" },
-    ["<leader>ec"] = { rhs = "<cmd>NvimTreeCopy<CR>", desc = "Copiar" },
-    ["<leader>em"] = { rhs = "<cmd>NvimTreeMove<CR>", desc = "Mover" },
-    ["<leader>ea"] = { rhs = "<cmd>NvimTreeCreate<CR>", desc = "Criar" },
-    ["<leader>ed"] = { rhs = "<cmd>NvimTreeRemove<CR>", desc = "Deletar" },
+ n = {
+    -- Show all keymaps
+    ["<leader>kk"] = { rhs = "<cmd>Legendary<CR>", desc = "Show keymaps" },
 
-    -- Comandos básicos
-    ["<leader>w"] = { rhs = "<cmd>w<CR>", desc = "Salvar" },
-    ["<leader>q"] = { rhs = "<cmd>q<CR>", desc = "Sair" },
-    ["<leader>nc"] = { rhs = "<cmd>lua require('notify').dismiss()<CR>", desc = "Fechar notificação" },
-    ["<leader>bc"] = { rhs = "<cmd>enew<CR>", desc = "Criar novo buffer" },
+    ["<leader>e"] = { rhs = "<cmd>NvimTreeToggle<CR>", desc = "Toggle Explorer" },
+    ["<leader>er"] = { rhs = "<cmd>NvimTreeRename<CR>", desc = "Rename" },
+    ["<leader>ec"] = { rhs = "<cmd>NvimTreeCopy<CR>", desc = "Copy" },
+    ["<leader>em"] = { rhs = "<cmd>NvimTreeMove<CR>", desc = "Move" },
+    ["<leader>ea"] = { rhs = "<cmd>NvimTreeCreate<CR>", desc = "Create" },
+    ["<leader>ed"] = { rhs = "<cmd>NvimTreeRemove<CR>", desc = "Delete" },
 
-    -- Navegação em janelas
+    -- Basic commands
+    ["<leader>w"] = { rhs = "<cmd>w<CR>", desc = "Save" },
+    ["<leader>q"] = { rhs = "<cmd>q<CR>", desc = "Quit" },
+    ["<leader>nc"] = { rhs = "<cmd>lua require('notify').dismiss()<CR>", desc = "Close notification" },
+    ["<leader>bc"] = { rhs = "<cmd>enew<CR>", desc = "Create new buffer" },
+
+    -- Window navigation
     ["<leader>a"] = {
       rhs = function()
         require("nvim-window").pick()
       end,
-      desc = "Navegar entre janelas (nvim-window)"
+      desc = "Navigate between windows (nvim-window)"
     },
 
-    -- Manipulação de janelas
-    ["<leader>sv"] = { rhs = ":vsp<CR>", desc = "Split vertical" },
-    ["<leader>sh"] = { rhs = ":sp<CR>", desc = "Split horizontal" },
-    ["<leader>wr"] = { rhs = ":WinResizerStartResize<CR>", desc = "Redimensionar janela (WinResizer)" },
-    ["<leader>wm"] = { rhs = "<cmd>WinShift<CR>", desc = "Ativar WinShift" },
-    ["<leader>wh"] = { rhs = "<cmd>WinShiftLeft<CR>", desc = "Mover janela para a esquerda" },
-    ["<leader>wj"] = { rhs = "<cmd>WinShiftDown<CR>", desc = "Mover janela para baixo" },
-    ["<leader>wk"] = { rhs = "<cmd>WinShiftUp<CR>", desc = "Mover janela para cima" },
-    ["<leader>wl"] = { rhs = "<cmd>WinShiftRight<CR>", desc = "Mover janela para a direita" },
-    ["<leader>rh"] = { rhs = "<cmd>WinShiftResizeLeft<CR>", desc = "Redimensionar janela para a esquerda" },
-    ["<leader>rj"] = { rhs = "<cmd>WinShiftResizeDown<CR>", desc = "Redimensionar janela para baixo" },
-    ["<leader>rk"] = { rhs = "<cmd>WinShiftResizeUp<CR>", desc = "Redimensionar janela para cima" },
-    ["<leader>rl"] = { rhs = "<cmd>WinShiftResizeRight<CR>", desc = "Redimensionar janela para a direita" },
+    -- Window management
+    ["<leader>sv"] = { rhs = ":vsp<CR>", desc = "Vertical split" },
+    ["<leader>sh"] = { rhs = ":sp<CR>", desc = "Horizontal split" },
+    ["<leader>wr"] = { rhs = ":WinResizerStartResize<CR>", desc = "Resize window (WinResizer)" },
+    ["<leader>wm"] = { rhs = "<cmd>WinShift<CR>", desc = "Activate WinShift" },
+    ["<leader>wh"] = { rhs = "<cmd>WinShiftLeft<CR>", desc = "Move window left" },
+    ["<leader>wj"] = { rhs = "<cmd>WinShiftDown<CR>", desc = "Move window down" },
+    ["<leader>wk"] = { rhs = "<cmd>WinShiftUp<CR>", desc = "Move window up" },
+    ["<leader>wl"] = { rhs = "<cmd>WinShiftRight<CR>", desc = "Move window right" },
+    ["<leader>rh"] = { rhs = "<cmd>WinShiftResizeLeft<CR>", desc = "Resize window left" },
+    ["<leader>rj"] = { rhs = "<cmd>WinShiftResizeDown<CR>", desc = "Resize window down" },
+    ["<leader>rk"] = { rhs = "<cmd>WinShiftResizeUp<CR>", desc = "Resize window up" },
+    ["<leader>rl"] = { rhs = "<cmd>WinShiftResizeRight<CR>", desc = "Resize window right" },
 
-    -- Navegação em buffers
-    ["<leader>bn"] = { rhs = "<cmd>BufferLineCycleNext<CR>", desc = "Próximo buffer" },
-    ["<leader>bp"] = { rhs = "<cmd>BufferLineCyclePrev<CR>", desc = "Buffer anterior" },
-    ["<leader>bj"] = { rhs = "<cmd>BufferLinePick<CR>", desc = "Escolher buffer" },
-    ["<leader>bq"] = { rhs = "<cmd>BufferLinePickClose<CR>", desc = "Escolher e fechar buffer" },
-    ["<leader>br"] = { rhs = "<cmd>BufferLineCloseRight<CR>", desc = "Fechar buffers à direita" },
-    ["<leader>bl"] = { rhs = "<cmd>BufferLineCloseLeft<CR>", desc = "Fechar buffers à esquerda" },
-    ["<leader>bo"] = { rhs = "<cmd>BufferLineCloseOthers<CR>", desc = "Fechar outros buffers" },
-    ["<leader>b1"] = { rhs = "<cmd>BufferGoto 1<CR>", desc = "Ir para o buffer 1" },
-    ["<leader>b2"] = { rhs = "<cmd>BufferGoto 2<CR>", desc = "Ir para o buffer 2" },
-    ["<leader>b3"] = { rhs = "<cmd>BufferGoto 3<CR>", desc = "Ir para o buffer 3" },
-    ["<leader>b4"] = { rhs = "<cmd>BufferGoto 4<CR>", desc = "Ir para o buffer 4" },
-    ["<leader>b5"] = { rhs = "<cmd>BufferGoto 5<CR>", desc = "Ir para o buffer 5" },
-    ["<leader>b6"] = { rhs = "<cmd>BufferGoto 6<CR>", desc = "Ir para o buffer 6" },
-    ["<leader>b7"] = { rhs = "<cmd>BufferGoto 7<CR>", desc = "Ir para o buffer 7" },
-    ["<leader>b8"] = { rhs = "<cmd>BufferGoto 8<CR>", desc = "Ir para o buffer 8" },
-    ["<leader>b9"] = { rhs = "<cmd>BufferGoto 9<CR>", desc = "Ir para o buffer 9" },
-    ["<leader>b0"] = { rhs = "<cmd>BufferGoto 10<CR>", desc = "Ir para o buffer 10" },
+    -- Buffer navigation
+    ["<leader>bn"] = { rhs = "<cmd>BufferLineCycleNext<CR>", desc = "Next buffer" },
+    ["<leader>bp"] = { rhs = "<cmd>BufferLineCyclePrev<CR>", desc = "Previous buffer" },
+    ["<leader>bj"] = { rhs = "<cmd>BufferLinePick<CR>", desc = "Pick buffer" },
+    ["<leader>bq"] = { rhs = "<cmd>BufferLinePickClose<CR>", desc = "Pick and close buffer" },
+    ["<leader>br"] = { rhs = "<cmd>BufferLineCloseRight<CR>", desc = "Close buffers to the right" },
+    ["<leader>bl"] = { rhs = "<cmd>BufferLineCloseLeft<CR>", desc = "Close buffers to the left" },
+    ["<leader>bo"] = { rhs = "<cmd>BufferLineCloseOthers<CR>", desc = "Close other buffers" },
+    ["<leader>b1"] = { rhs = "<cmd>BufferGoto 1<CR>", desc = "Go to buffer 1" },
+    ["<leader>b2"] = { rhs = "<cmd>BufferGoto 2<CR>", desc = "Go to buffer 2" },
+    ["<leader>b3"] = { rhs = "<cmd>BufferGoto 3<CR>", desc = "Go to buffer 3" },
+    ["<leader>b4"] = { rhs = "<cmd>BufferGoto 4<CR>", desc = "Go to buffer 4" },
+    ["<leader>b5"] = { rhs = "<cmd>BufferGoto 5<CR>", desc = "Go to buffer 5" },
+    ["<leader>b6"] = { rhs = "<cmd>BufferGoto 6<CR>", desc = "Go to buffer 6" },
+    ["<leader>b7"] = { rhs = "<cmd>BufferGoto 7<CR>", desc = "Go to buffer 7" },
+    ["<leader>b8"] = { rhs = "<cmd>BufferGoto 8<CR>", desc = "Go to buffer 8" },
+    ["<leader>b9"] = { rhs = "<cmd>BufferGoto 9<CR>", desc = "Go to buffer 9" },
+    ["<leader>b0"] = { rhs = "<cmd>BufferGoto 10<CR>", desc = "Go to buffer 10" },
 
     -- Telescope
     ["<leader>ff"] = {
       rhs = function()
         require("telescope.builtin").find_files()
       end,
-      desc = "Encontrar arquivos (Telescope)"
+      desc = "Find files (Telescope)"
     },
     ["<leader>fg"] = {
       rhs = function()
@@ -74,7 +77,7 @@ local keymaps = {
       rhs = function()
         require("telescope.builtin").buffers()
       end,
-      desc = "Listar buffers (Telescope)"
+      desc = "List buffers (Telescope)"
     },
     ["<leader>fh"] = {
       rhs = function()
@@ -88,93 +91,94 @@ local keymaps = {
       rhs = function()
         require("harpoon").mark.add_file()
       end,
-      desc = "Adicionar arquivo ao Harpoon"
+      desc = "Add file to Harpoon"
     },
     ["<leader>fe"] = {
       rhs = function()
         require("harpoon").ui.toggle_quick_menu()
       end,
-      desc = "Alternar menu rápido do Harpoon"
+      desc = "Toggle Harpoon quick menu"
     },
     ["<leader>f1"] = {
       rhs = function()
         require("harpoon").ui.nav_file(1)
       end,
-      desc = "Navegar para o arquivo 1 no Harpoon"
+      desc = "Navigate to file 1 in Harpoon"
     },
     ["<leader>f2"] = {
       rhs = function()
         require("harpoon").ui.nav_file(2)
       end,
-      desc = "Navegar para o arquivo 2 no Harpoon"
+      desc = "Navigate to file 2 in Harpoon"
     },
     ["<leader>f3"] = {
       rhs = function()
         require("harpoon").ui.nav_file(3)
       end,
-      desc = "Navegar para o arquivo 3 no Harpoon"
+      desc = "Navigate to file 3 in Harpoon"
     },
     ["<leader>f4"] = {
       rhs = function()
         require("harpoon").ui.nav_file(4)
       end,
-      desc = "Navegar para o arquivo 4 no Harpoon"
+      desc = "Navigate to file 4 in Harpoon"
     },
     ["<leader>fp"] = {
       rhs = function()
         require("harpoon").ui.nav_prev()
       end,
-      desc = "Navegar para o arquivo anterior no Harpoon"
+      desc = "Navigate to previous file in Harpoon"
     },
     ["<leader>fn"] = {
       rhs = function()
         require("harpoon").ui.nav_next()
       end,
-      desc = "Navegar para o próximo arquivo no Harpoon"
+      desc = "Navigate to next file in Harpoon"
     },
 
-    -- Comentários
-    ["<leader>cc"] = { rhs = "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>", desc = "Comentar/descomentar linha" },
-    ["<leader>cb"] = { rhs = "<cmd>lua require('Comment.api').toggle.blockwise.current()<CR>", desc = "Comentar/descomentar bloco" },
-    ["<leader>cu"] = { rhs = "<cmd>lua require('Comment.api').unlock.current()<CR>", desc = "Descomentar linha" },
+    -- Comments
+    ["<leader>cc"] = { rhs = "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>", desc = "Toggle line comment" },
+    ["<leader>cb"] = { rhs = "<cmd>lua require('Comment.api').toggle.blockwise.current()<CR>", desc = "Toggle block comment" },
+    ["<leader>cu"] = { rhs = "<cmd>lua require('Comment.api').unlock.current()<CR>", desc = "Unlock line comment" },
 
-    -- LSP
-    ["gd"] = { rhs = vim.lsp.buf.definition, desc = "Ir para definição (LSP)" },
-    ["gr"] = { rhs = vim.lsp.buf.references, desc = "Referências (LSP)" },
-    ["gi"] = { rhs = vim.lsp.buf.implementation, desc = "Ir para implementação (LSP)" },
-    ["<leader>rn"] = { rhs = vim.lsp.buf.rename, desc = "Renomear (LSP)" },
-    ["<leader>ca"] = { rhs = vim.lsp.buf.code_action, desc = "Ação de código (LSP)" },
-    ["<leader>f"] = { rhs = vim.lsp.buf.format, desc = "Formatar (LSP)" },
-    ["<leader>ce"] = { rhs = vim.diagnostic.open_float, desc = "Abrir erro flutuante" },
-    ["[d"] = { rhs = vim.diagnostic.goto_prev, desc = "Ir para o erro anterior" },
-    ["]d"] = { rhs = vim.diagnostic.goto_next, desc = "Ir para o próximo erro" },
+-- LSP
+["gd"] = { rhs = vim.lsp.buf.definition, desc = "Go to definition (LSP)" },
+["gr"] = { rhs = vim.lsp.buf.references, desc = "References (LSP)" },
+["gi"] = { rhs = vim.lsp.buf.implementation, desc = "Go to implementation (LSP)" },
+["<leader>rn"] = { rhs = vim.lsp.buf.rename, desc = "Rename (LSP)" },
+["<leader>ca"] = { rhs = vim.lsp.buf.code_action, desc = "Code action (LSP)" },
+["<leader>f"] = { rhs = vim.lsp.buf.format, desc = "Format (LSP)" },
+["<leader>ce"] = { rhs = vim.diagnostic.open_float, desc = "Open floating error" },
+["[d"] = { rhs = vim.diagnostic.goto_prev, desc = "Go to previous error" },
+["]d"] = { rhs = vim.diagnostic.goto_next, desc = "Go to next error" },
 
-    -- Troubles
-    ["<leader>xx"] = { rhs = "<cmd>Trouble diagnostics toggle<CR>", desc = "Abrir/fechar Trouble" },
+-- Troubles
+["<leader>xx"] = { rhs = "<cmd>Trouble diagnostics toggle<CR>", desc = "Open/close Trouble" },
 
-    -- TypeScript tools (comentados)
-    -- ["<leader>oi"] = { rhs = ":TSToolsOrganizeImports<CR>", desc = "Organizar imports (TypeScript)" },
-    -- ["<leader>si"] = { rhs = ":TSToolsSortImports<CR>", desc = "Ordenar imports (TypeScript)" },
-    -- ["<leader>ri"] = { rhs = ":TSToolsRemoveUnusedImports<CR>", desc = "Remover imports não utilizados (TypeScript)" },
-    -- ["<leader>ru"] = { rhs = ":TSToolsRemoveUnused<CR>", desc = "Remover código não utilizado (TypeScript)" },
-    -- ["<leader>ai"] = { rhs = ":TSToolsAddMissingImports<CR>", desc = "Adicionar imports faltantes (TypeScript)" },
-    -- ["<leader>fa"] = { rhs = ":TSToolsFixAll<CR>", desc = "Corrigir todos os erros (TypeScript)" },
-    -- ["<leader>gsd"] = { rhs = ":TSToolsGoToSourceDefinition<CR>", desc = "Ir para definição (TypeScript)" },
-    -- ["<leader>rf"] = { rhs = ":TSToolsRenameFile<CR>", desc = "Renomear arquivo (TypeScript)" },
-    -- ["<leader>fr"] = { rhs = ":TSToolsFileReferences<CR>", desc = "Encontrar referências do arquivo (TypeScript)" },
+-- TypeScript tools (commented)
+-- ["<leader>oi"] = { rhs = ":TSToolsOrganizeImports<CR>", desc = "Organize imports (TypeScript)" },
+-- ["<leader>si"] = { rhs = ":TSToolsSortImports<CR>", desc = "Sort imports (TypeScript)" },
+-- ["<leader>ri"] = { rhs = ":TSToolsRemoveUnusedImports<CR>", desc = "Remove unused imports (TypeScript)" },
+-- ["<leader>ru"] = { rhs = ":TSToolsRemoveUnused<CR>", desc = "Remove unused code (TypeScript)" },
+-- ["<leader>ai"] = { rhs = ":TSToolsAddMissingImports<CR>", desc = "Add missing imports (TypeScript)" },
+-- ["<leader>fa"] = { rhs = ":TSToolsFixAll<CR>", desc = "Fix all errors (TypeScript)" },
+-- ["<leader>gsd"] = { rhs = ":TSToolsGoToSourceDefinition<CR>", desc = "Go to source definition (TypeScript)" },
+-- ["<leader>rf"] = { rhs = ":TSToolsRenameFile<CR>", desc = "Rename file (TypeScript)" },
+-- ["<leader>fr"] = { rhs = ":TSToolsFileReferences<CR>", desc = "Find file references (TypeScript)" },
   },
-
-  -- Autocomplete (cmp)
+-- Autocomplete (cmp)
   i = {
-    ["<C-n>"] = { rhs = require("cmp").mapping.select_next_item, desc = "Próximo item na lista de sugestões" },
-    ["<C-p>"] = { rhs = require("cmp").mapping.select_prev_item, desc = "Item anterior na lista de sugestões" },
-    ["<C-e>"] = { rhs = require("cmp").mapping.close, desc = "Fechar a janela de sugestões" },
+    ["<C-n>"] = { rhs = require("cmp").mapping.select_next_item, desc = "Next item in suggestion list" },
+    ["<C-p>"] = { rhs = require("cmp").mapping.select_prev_item, desc = "Previous item in suggestion list" },
+    ["<C-e>"] = { rhs = require("cmp").mapping.close, desc = "Close suggestion window" },
 
     -- Emmet
-    ["<C-y>"] = { rhs = "<Plug>(emmet-expand-abbr)", desc = "Expandir abreviação Emmet" },
+    ["<C-y>"] = { rhs = "<Plug>(emmet-expand-abbr)", desc = "Expand Emmet abbreviation" },
   },
 }
 
 
 utils.set_keymaps(keymaps)
+
+wk.register({ keymaps })
 
