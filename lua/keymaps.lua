@@ -1,184 +1,282 @@
 local utils = require('utils')
-local wk = require('which-key')
-local keymaps = {
-  -- NvimTree
- n = {
-    -- Show all keymaps
-    ["<leader>kk"] = { rhs = "<cmd>Legendary<CR>", desc = "Show keymaps" },
+return {
+  ["<leader>ks"] = { "<cmd>w<CR>", "Search keymaps", mode = "n" },
 
-    ["<leader>e"] = { rhs = "<cmd>NvimTreeToggle<CR>", desc = "Toggle Explorer" },
-    ["<leader>er"] = { rhs = "<cmd>NvimTreeRename<CR>", desc = "Rename" },
-    ["<leader>ec"] = { rhs = "<cmd>NvimTreeCopy<CR>", desc = "Copy" },
-    ["<leader>em"] = { rhs = "<cmd>NvimTreeMove<CR>", desc = "Move" },
-    ["<leader>ea"] = { rhs = "<cmd>NvimTreeCreate<CR>", desc = "Create" },
-    ["<leader>ed"] = { rhs = "<cmd>NvimTreeRemove<CR>", desc = "Delete" },
+  ["<leader>e"] = { "<cmd>NvimTreeToggle<CR>", "Toggle Explorer", mode = "n" },
+  ["<leader>er"] = { "<cmd>NvimTreeRename<CR>", "Rename", mode = "n" },
+  ["<leader>ec"] = { "<cmd>NvimTreeCopy<CR>", "Copy", mode = "n" },
+  ["<leader>em"] = { "<cmd>NvimTreeMove<CR>", "Move", mode = "n" },
+  ["<leader>ea"] = { "<cmd>NvimTreeCreate<CR>", "Create", mode = "n" },
+  ["<leader>ed"] = { "<cmd>NvimTreeRemove<CR>", "Delete", mode = "n" },
 
-    -- Basic commands
-    ["<leader>w"] = { rhs = "<cmd>w<CR>", desc = "Save" },
-    ["<leader>q"] = { rhs = "<cmd>q<CR>", desc = "Quit" },
-    ["<leader>nc"] = { rhs = "<cmd>lua require('notify').dismiss()<CR>", desc = "Close notification" },
-    ["<leader>bc"] = { rhs = "<cmd>enew<CR>", desc = "Create new buffer" },
+  -- Basic commands
+  ["<leader>w"] = { "<cmd>w<CR>", "Save", mode = "n" },
+  ["<leader>q"] = { "<cmd>q<CR>", "Quit", mode = "n" },
+  ["<leader>nc"] = { "<cmd>lua require('notify').dismiss()<CR>", "Close notification", mode = "n" },
+  ["<leader>bc"] = { "<cmd>enew<CR>", "Create new buffer", mode = "n" },
 
-    -- Window navigation
-    ["<leader>a"] = {
-      rhs = function()
-        require("nvim-window").pick()
-      end,
-      desc = "Navigate between windows (nvim-window)"
-    },
+  -- Window navigation
+  ["<leader>a"] = {
+    function()
+      require("nvim-window").pick()
+    end,
+    "Navigate between windows (nvim-window)",
+    mode = "n"
+  },
 
-    -- Window management
-    ["<leader>sv"] = { rhs = ":vsp<CR>", desc = "Vertical split" },
-    ["<leader>sh"] = { rhs = ":sp<CR>", desc = "Horizontal split" },
-    ["<leader>wr"] = { rhs = ":WinResizerStartResize<CR>", desc = "Resize window (WinResizer)" },
-    ["<leader>wm"] = { rhs = "<cmd>WinShift<CR>", desc = "Activate WinShift" },
-    ["<leader>wh"] = { rhs = "<cmd>WinShiftLeft<CR>", desc = "Move window left" },
-    ["<leader>wj"] = { rhs = "<cmd>WinShiftDown<CR>", desc = "Move window down" },
-    ["<leader>wk"] = { rhs = "<cmd>WinShiftUp<CR>", desc = "Move window up" },
-    ["<leader>wl"] = { rhs = "<cmd>WinShiftRight<CR>", desc = "Move window right" },
-    ["<leader>rh"] = { rhs = "<cmd>WinShiftResizeLeft<CR>", desc = "Resize window left" },
-    ["<leader>rj"] = { rhs = "<cmd>WinShiftResizeDown<CR>", desc = "Resize window down" },
-    ["<leader>rk"] = { rhs = "<cmd>WinShiftResizeUp<CR>", desc = "Resize window up" },
-    ["<leader>rl"] = { rhs = "<cmd>WinShiftResizeRight<CR>", desc = "Resize window right" },
+  -- Window management
+  ["<leader>sv"] = { ":vsp<CR>", "Vertical split", mode = "n" },
+  ["<leader>sh"] = { ":sp<CR>", "Horizontal split", mode = "n" },
+  ["<leader>wr"] = { ":WinResizerStartResize<CR>", "Resize window (WinResizer)", mode = "n" },
+  ["<leader>wm"] = { "<cmd>WinShift<CR>", "Activate WinShift", mode = "n" },
+  ["<leader>wh"] = { "<cmd>WinShiftLeft<CR>", "Move window left", mode = "n" },
+  ["<leader>wj"] = { "<cmd>WinShiftDown<CR>", "Move window down", mode = "n" },
+  ["<leader>wk"] = { "<cmd>WinShiftUp<CR>", "Move window up", mode = "n" },
+  ["<leader>wl"] = { "<cmd>WinShiftRight<CR>", "Move window right", mode = "n" },
+  ["<leader>rh"] = { "<cmd>WinShiftResizeLeft<CR>", "Resize window left", mode = "n" },
+  ["<leader>rj"] = { "<cmd>WinShiftResizeDown<CR>", "Resize window down", mode = "n" },
+  ["<leader>rk"] = { "<cmd>WinShiftResizeUp<CR>", "Resize window up", mode = "n" },
+  ["<leader>rl"] = { "<cmd>WinShiftResizeRight<CR>", "Resize window right", mode = "n" },
 
-    -- Buffer navigation
-    ["<leader>bn"] = { rhs = "<cmd>BufferLineCycleNext<CR>", desc = "Next buffer" },
-    ["<leader>bp"] = { rhs = "<cmd>BufferLineCyclePrev<CR>", desc = "Previous buffer" },
-    ["<leader>bj"] = { rhs = "<cmd>BufferLinePick<CR>", desc = "Pick buffer" },
-    ["<leader>bq"] = { rhs = "<cmd>BufferLinePickClose<CR>", desc = "Pick and close buffer" },
-    ["<leader>br"] = { rhs = "<cmd>BufferLineCloseRight<CR>", desc = "Close buffers to the right" },
-    ["<leader>bl"] = { rhs = "<cmd>BufferLineCloseLeft<CR>", desc = "Close buffers to the left" },
-    ["<leader>bo"] = { rhs = "<cmd>BufferLineCloseOthers<CR>", desc = "Close other buffers" },
-    ["<leader>b1"] = { rhs = "<cmd>BufferGoto 1<CR>", desc = "Go to buffer 1" },
-    ["<leader>b2"] = { rhs = "<cmd>BufferGoto 2<CR>", desc = "Go to buffer 2" },
-    ["<leader>b3"] = { rhs = "<cmd>BufferGoto 3<CR>", desc = "Go to buffer 3" },
-    ["<leader>b4"] = { rhs = "<cmd>BufferGoto 4<CR>", desc = "Go to buffer 4" },
-    ["<leader>b5"] = { rhs = "<cmd>BufferGoto 5<CR>", desc = "Go to buffer 5" },
-    ["<leader>b6"] = { rhs = "<cmd>BufferGoto 6<CR>", desc = "Go to buffer 6" },
-    ["<leader>b7"] = { rhs = "<cmd>BufferGoto 7<CR>", desc = "Go to buffer 7" },
-    ["<leader>b8"] = { rhs = "<cmd>BufferGoto 8<CR>", desc = "Go to buffer 8" },
-    ["<leader>b9"] = { rhs = "<cmd>BufferGoto 9<CR>", desc = "Go to buffer 9" },
-    ["<leader>b0"] = { rhs = "<cmd>BufferGoto 10<CR>", desc = "Go to buffer 10" },
+  -- Buffer navigation
+  ["<leader>bn"] = { "<cmd>BufferLineCycleNext<CR>", "Next buffer", mode = "n" },
+  ["<leader>bp"] = { "<cmd>BufferLineCyclePrev<CR>", "Previous buffer", mode = "n" },
+  ["<leader>bj"] = { "<cmd>BufferLinePick<CR>", "Pick buffer", mode = "n" },
+  ["<leader>bq"] = { "<cmd>BufferLinePickClose<CR>", "Pick and close buffer", mode = "n" },
+  ["<leader>br"] = { "<cmd>BufferLineCloseRight<CR>", "Close buffers to the right", mode = "n" },
+  ["<leader>bl"] = { "<cmd>BufferLineCloseLeft<CR>", "Close buffers to the left", mode = "n" },
+  ["<leader>bo"] = { "<cmd>BufferLineCloseOthers<CR>", "Close other buffers", mode = "n" },
+  ["<leader>b1"] = { "<cmd>BufferGoto 1<CR>", "Go to buffer 1", mode = "n" },
+  ["<leader>b2"] = { "<cmd>BufferGoto 2<CR>", "Go to buffer 2", mode = "n" },
+  ["<leader>b3"] = { "<cmd>BufferGoto 3<CR>", "Go to buffer 3", mode = "n" },
+  ["<leader>b4"] = { "<cmd>BufferGoto 4<CR>", "Go to buffer 4", mode = "n" },
+  ["<leader>b5"] = { "<cmd>BufferGoto 5<CR>", "Go to buffer 5", mode = "n" },
+  ["<leader>b6"] = { "<cmd>BufferGoto 6<CR>", "Go to buffer 6", mode = "n" },
+  ["<leader>b7"] = { "<cmd>BufferGoto 7<CR>", "Go to buffer 7", mode = "n" },
+  ["<leader>b8"] = { "<cmd>BufferGoto 8<CR>", "Go to buffer 8", mode = "n" },
+  ["<leader>b9"] = { "<cmd>BufferGoto 9<CR>", "Go to buffer 9", mode = "n" },
+  ["<leader>b0"] = { "<cmd>BufferGoto 10<CR>", "Go to buffer 10", mode = "n" },
 
-    -- Telescope
-    ["<leader>ff"] = {
-      rhs = function()
-        require("telescope.builtin").find_files()
-      end,
-      desc = "Find files (Telescope)"
-    },
-    ["<leader>fg"] = {
-      rhs = function()
-        require("telescope.builtin").live_grep()
-      end,
-      desc = "Live grep (Telescope)"
-    },
-    ["<leader>fb"] = {
-      rhs = function()
-        require("telescope.builtin").buffers()
-      end,
-      desc = "List buffers (Telescope)"
-    },
-    ["<leader>fh"] = {
-      rhs = function()
-        require("telescope.builtin").help_tags()
-      end,
-      desc = "Help tags (Telescope)"
-    },
+  -- Telescope
+  ["<leader>ff"] = {
+    function()
+      require("telescope.builtin").find_files()
+    end,
+    "Find files (Telescope)",
+    mode = "n"
+  },
+  ["<leader>fg"] = {
+    function()
+      require("telescope.builtin").live_grep()
+    end,
+    "Live grep (Telescope)",
+    mode = "n"
+  },
+  ["<leader>fb"] = {
+    function()
+      require("telescope.builtin").buffers()
+    end,
+    "List buffers (Telescope)",
+    mode = "n"
+  },
+  ["<leader>fh"] = {
+    function()
+      require("telescope.builtin").help_tags()
+    end,
+    "Help tags (Telescope)",
+    mode = "n"
+  },
 
-    -- Harpoon
-    ["<leader>fa"] = {
-      rhs = function()
-        require("harpoon").mark.add_file()
-      end,
-      desc = "Add file to Harpoon"
-    },
-    ["<leader>fe"] = {
-      rhs = function()
-        require("harpoon").ui.toggle_quick_menu()
-      end,
-      desc = "Toggle Harpoon quick menu"
-    },
-    ["<leader>f1"] = {
-      rhs = function()
-        require("harpoon").ui.nav_file(1)
-      end,
-      desc = "Navigate to file 1 in Harpoon"
-    },
-    ["<leader>f2"] = {
-      rhs = function()
-        require("harpoon").ui.nav_file(2)
-      end,
-      desc = "Navigate to file 2 in Harpoon"
-    },
-    ["<leader>f3"] = {
-      rhs = function()
-        require("harpoon").ui.nav_file(3)
-      end,
-      desc = "Navigate to file 3 in Harpoon"
-    },
-    ["<leader>f4"] = {
-      rhs = function()
-        require("harpoon").ui.nav_file(4)
-      end,
-      desc = "Navigate to file 4 in Harpoon"
-    },
-    ["<leader>fp"] = {
-      rhs = function()
-        require("harpoon").ui.nav_prev()
-      end,
-      desc = "Navigate to previous file in Harpoon"
-    },
-    ["<leader>fn"] = {
-      rhs = function()
-        require("harpoon").ui.nav_next()
-      end,
-      desc = "Navigate to next file in Harpoon"
-    },
+  -- Harpoon
+  ["<leader>fa"] = {
+    function()
+      require("harpoon").mark.add_file()
+    end,
+    "Add file to Harpoon",
+    mode = "n"
+  },
+  ["<leader>fe"] = {
+    function()
+      require("harpoon").ui.toggle_quick_menu()
+    end,
+    "Toggle Harpoon quick menu",
+    mode = "n"
+  },
+  ["<leader>f1"] = {
+    function()
+      require("harpoon").ui.nav_file(1)
+    end,
+    "Navigate to file 1 in Harpoon",
+    mode = "n"
+  },
+  ["<leader>f2"] = {
+    function()
+      require("harpoon").ui.nav_file(2)
+    end,
+    "Navigate to file 2 in Harpoon",
+    mode = "n"
+  },
+  ["<leader>f3"] = {
+    function()
+      require("harpoon").ui.nav_file(3)
+    end,
+    "Navigate to file 3 in Harpoon",
+    mode = "n"
+  },
+  ["<leader>f4"] = {
+    function()
+      require("harpoon").ui.nav_file(4)
+    end,
+    "Navigate to file 4 in Harpoon",
+    mode = "n"
+  },
+  ["<leader>fp"] = {
+    function()
+      require("harpoon").ui.nav_prev()
+    end,
+    "Navigate to previous file in Harpoon",
+    mode = "n"
+  },
+  ["<leader>fn"] = {
+    function()
+      require("harpoon").ui.nav_next()
+    end,
+    "Navigate to next file in Harpoon",
+    mode = "n"
+  },
 
-    -- Comments
-    ["<leader>cc"] = { rhs = "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>", desc = "Toggle line comment" },
-    ["<leader>cb"] = { rhs = "<cmd>lua require('Comment.api').toggle.blockwise.current()<CR>", desc = "Toggle block comment" },
-    ["<leader>cu"] = { rhs = "<cmd>lua require('Comment.api').unlock.current()<CR>", desc = "Unlock line comment" },
+  -- Comments
+  ["<leader>cc"] = { "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>", "Toggle line comment", mode = "n" },
+  ["<leader>cb"] = { "<cmd>lua require('Comment.api').toggle.blockwise.current()<CR>", "Toggle block comment", mode = "n" },
+  ["<leader>cu"] = { "<cmd>lua require('Comment.api').unlock.current()<CR>", "Unlock line comment", mode = "n" },
 
 -- LSP
-["gd"] = { rhs = vim.lsp.buf.definition, desc = "Go to definition (LSP)" },
-["gr"] = { rhs = vim.lsp.buf.references, desc = "References (LSP)" },
-["gi"] = { rhs = vim.lsp.buf.implementation, desc = "Go to implementation (LSP)" },
-["<leader>rn"] = { rhs = vim.lsp.buf.rename, desc = "Rename (LSP)" },
-["<leader>ca"] = { rhs = vim.lsp.buf.code_action, desc = "Code action (LSP)" },
-["<leader>f"] = { rhs = vim.lsp.buf.format, desc = "Format (LSP)" },
-["<leader>ce"] = { rhs = vim.diagnostic.open_float, desc = "Open floating error" },
-["[d"] = { rhs = vim.diagnostic.goto_prev, desc = "Go to previous error" },
-["]d"] = { rhs = vim.diagnostic.goto_next, desc = "Go to next error" },
-
--- Troubles
-["<leader>xx"] = { rhs = "<cmd>Trouble diagnostics toggle<CR>", desc = "Open/close Trouble" },
-
--- TypeScript tools (commented)
--- ["<leader>oi"] = { rhs = ":TSToolsOrganizeImports<CR>", desc = "Organize imports (TypeScript)" },
--- ["<leader>si"] = { rhs = ":TSToolsSortImports<CR>", desc = "Sort imports (TypeScript)" },
--- ["<leader>ri"] = { rhs = ":TSToolsRemoveUnusedImports<CR>", desc = "Remove unused imports (TypeScript)" },
--- ["<leader>ru"] = { rhs = ":TSToolsRemoveUnused<CR>", desc = "Remove unused code (TypeScript)" },
--- ["<leader>ai"] = { rhs = ":TSToolsAddMissingImports<CR>", desc = "Add missing imports (TypeScript)" },
--- ["<leader>fa"] = { rhs = ":TSToolsFixAll<CR>", desc = "Fix all errors (TypeScript)" },
--- ["<leader>gsd"] = { rhs = ":TSToolsGoToSourceDefinition<CR>", desc = "Go to source definition (TypeScript)" },
--- ["<leader>rf"] = { rhs = ":TSToolsRenameFile<CR>", desc = "Rename file (TypeScript)" },
--- ["<leader>fr"] = { rhs = ":TSToolsFileReferences<CR>", desc = "Find file references (TypeScript)" },
+  ["gd"] = {
+    function() vim.lsp.buf.definition() end,
+    desc = "Go to definition (LSP)",
+    mode = "n"
   },
--- Autocomplete (cmp)
-  i = {
-    ["<C-n>"] = { rhs = require("cmp").mapping.select_next_item, desc = "Next item in suggestion list" },
-    ["<C-p>"] = { rhs = require("cmp").mapping.select_prev_item, desc = "Previous item in suggestion list" },
-    ["<C-e>"] = { rhs = require("cmp").mapping.close, desc = "Close suggestion window" },
+  ["gr"] = {
+    function() vim.lsp.buf.references() end,
+    desc = "References (LSP)",
+    mode = "n"
+  },
+  ["gi"] = {
+    function() vim.lsp.buf.implementation() end,
+    desc = "Go to implementation (LSP)",
+    mode = "n"
+  },
+  ["<leader>rn"] = {
+    function() vim.lsp.buf.rename() end,
+    desc = "Rename (LSP)",
+    mode = "n"
+  },
+  ["<leader>ca"] = {
+    function() vim.lsp.buf.code_action() end,
+    desc = "Code action (LSP)",
+    mode = "n"
+  },
+  ["<leader>f"] = {
+    function() vim.lsp.buf.format() end,
+    desc = "Format (LSP)",
+    mode = "n"
+  },
+  ["<leader>ce"] = {
+    function() vim.diagnostic.open_float() end,
+    desc = "Open floating error",
+    mode = "n"
+  },
+  ["[d"] = {
+    function() vim.diagnostic.goto_prev() end,
+    desc = "Go to previous error",
+    mode = "n"
+  },
+  ["]d"] = {
+    function() vim.diagnostic.goto_next() end,
+    desc = "Go to next error",
+    mode = "n"
+  },
 
-    -- Emmet
-    ["<C-y>"] = { rhs = "<Plug>(emmet-expand-abbr)", desc = "Expand Emmet abbreviation" },
+  -- Troubles
+  ["<leader>xx"] = {
+    "<cmd>Trouble diagnostics toggle<CR>",
+    desc = "Open/close Trouble",
+    mode = "n"
+  },
+
+  -- TypeScript tools (comentado)
+  -- ["<leader>oi"] = {
+  --   ":TSToolsOrganizeImports<CR>",
+  --   desc = "Organize imports (TypeScript)",
+  --   mode = "n"
+  -- },
+  -- ["<leader>si"] = {
+  --   ":TSToolsSortImports<CR>",
+  --   desc = "Sort imports (TypeScript)",
+  --   mode = "n"
+  -- },
+  -- ["<leader>ri"] = {
+  --   ":TSToolsRemoveUnusedImports<CR>",
+  --   desc = "Remove unused imports (TypeScript)",
+  --   mode = "n"
+  -- },
+  -- ["<leader>ru"] = {
+  --   ":TSToolsRemoveUnused<CR>",
+  --   desc = "Remove unused code (TypeScript)",
+  --   mode = "n"
+  -- },
+  -- ["<leader>ai"] = {
+  --   ":TSToolsAddMissingImports<CR>",
+  --   desc = "Add missing imports (TypeScript)",
+  --   mode = "n"
+  -- },
+  -- ["<leader>fa"] = {
+  --   ":TSToolsFixAll<CR>",
+  --   desc = "Fix all errors (TypeScript)",
+  --   mode = "n"
+  -- },
+  -- ["<leader>gsd"] = {
+  --   ":TSToolsGoToSourceDefinition<CR>",
+  --   desc = "Go to source definition (TypeScript)",
+  --   mode = "n"
+  -- },
+  -- ["<leader>rf"] = {
+  --   ":TSToolsRenameFile<CR>",
+  --   desc = "Rename file (TypeScript)",
+  --   mode = "n"
+  -- },
+  -- ["<leader>fr"] = {
+  --   ":TSToolsFileReferences<CR>",
+  --   desc = "Find file references (TypeScript)",
+  --   mode = "n"
+  -- },
+
+  -- Autocomplete (cmp)
+  ["<C-n>"] = {
+    function() require("cmp").mapping.select_next_item() end,
+    desc = "Next item in suggestion list",
+    mode = "i"
+  },
+  ["<C-p>"] = {
+    function() require("cmp").mapping.select_prev_item() end,
+    desc = "Previous item in suggestion list",
+    mode = "i"
+  },
+  ["<C-e>"] = {
+    function() require("cmp").mapping.close() end,
+    desc = "Close suggestion window",
+    mode = "i"
+  },
+
+  -- Emmet
+  ["<C-y>"] = {
+    "<Plug>(emmet-expand-abbr)",
+    desc = "Expand Emmet abbreviation",
+    mode = "i"
   },
 }
 
+-- utils.set_keymaps(M.keymaps)
 
-utils.set_keymaps(keymaps)
-
-wk.register({ keymaps })
+-- wk.register({ keymaps })
 
