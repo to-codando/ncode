@@ -1,3 +1,4 @@
 # Table of contents
 
-* [Ncode](README.md)
+* [Your new super lightweight and ultra-fast code editor.](README.md)
+* [Documentation](documentation.md)
