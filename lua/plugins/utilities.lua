@@ -12,7 +12,6 @@ return {
     wk.setup({
       -- Escolha o layout (opções: "classic", "modern", "helix")
       preset = "classic",
-
       -- Tempo de delay antes de mostrar o popup
       delay = 200,
 
@@ -105,6 +104,7 @@ return {
       },
 
       debug = false,
+      notify = false,
     })
     wk.register(maps)
   end
