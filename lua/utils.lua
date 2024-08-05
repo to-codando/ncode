@@ -81,6 +81,20 @@ local function set_keymaps(keymaps)
   end
 end
 
+    local function format_keymaps(maps)
+      local formatted_maps = {}
+      for key, map in pairs(maps) do
+        local cmd, desc = map[1], map[2]
+        local mode = map.mode or "n"
+        -- Formata a descrição com o modo
+        formatted_maps[key] = {
+          cmd,
+          string.format("%s %s - %s", mode, key, desc)
+        }
+      end
+      return formatted_maps
+    end
+
 local function get_process_id(cmd)
   local handle = io.popen(cmd)
   local result = handle:read("*a")
@@ -97,6 +111,7 @@ return {
   merge_tables = merge_tables,
   handle_tab = handle_tab,
   set_keymaps = set_keymaps,
+  format_keymaps = format_keymaps,
   get_process_id = get_process_id,
 }
 

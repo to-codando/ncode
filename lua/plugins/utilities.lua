@@ -6,6 +6,7 @@ return {
     -- Carregue o plugin
     local wk = require("which-key")
     local maps = require('keymaps')
+    local utils = require('utils')
 
     -- Configure o which-key
     wk.setup({
@@ -22,10 +23,10 @@ return {
 
       -- Plugins habilitados
       plugins = {
-        marks = true,
+        marks = false,
         registers = true,
         spelling = {
-          enabled = true,
+          enabled = false,
           suggestions = 20,
         },
         presets = {

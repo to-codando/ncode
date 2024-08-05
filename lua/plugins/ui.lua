@@ -8,11 +8,22 @@ return {
     "rcarriga/nvim-notify",
   --  enabled = false,
     config = function()
-      require('notify').setup({
-        timeout = 2000, -- Ajuste o tempo de exibição em milissegundos
-        stage = 'slide'
-      })
-      vim.notify = require('notify')
+    local notify = require("notify")
+
+    -- Configuração básica
+    notify.setup({
+      stages = "slide",
+      timeout = 1000, -- Tempo em milissegundos
+      background_colour = "#000000",
+    })
+
+    -- Suprime os warnings
+    vim.notify = function(msg, level, opts)
+      if level == "WARN" then
+        return -- Não exibe warnings
+      end
+      notify(msg, level, opts)
+    end
     end
   },
   {
@@ -23,23 +34,36 @@ return {
       "rcarriga/nvim-notify",
     },
     config = function()
-      require('noice').setup({
-        lsp = {
-          hover = {
-            enabled = false,
-          },
+    local noice = require("noice")
+    noice.setup({
+      -- Configuração para suprimir warnings
+      lsp = {
+        signature = {
+          enabled = false, -- Desativa a exibição de assinaturas de função
         },
-          notify = {
-    -- Exibir mensagens de erro com notify
-    error = true,
+        progress = {
+          enabled = false, -- Desativa a exibição de progresso do LSP
+        },
+        hover = {
+          enabled = false, -- Desativa a exibição de hover do LSP
+        },
+        message = {
+          enabled = false, -- Desativa a exibição de mensagens do LSP
+        },
+        diagnostic = {
+          enabled = false, -- Desativa a exibição de diagnósticos (warnings e erros)
+        }
+      },
+      messages = {
+        enabled = true, -- Exibe mensagens de erro
+        view = "notify", -- Redireciona mensagens para o nvim-notify
+      },
+      notify = {
+        -- Integração com nvim-notify
+        enabled = true,
+      },
+    })
 
-    -- Exibir mensagens de aviso com notify
-    warn = true,
-
-    -- Outras mensagens podem ser exibidas com um método padrão
-    info = false,
-  },
-      })
     end
   },
   {

@@ -1,17 +1,15 @@
 -- ~/.config/nvim/lua/plugins/comment.lua
+-- ~/.config/nvim/lua/plugins/comment.lua
 return {
-  'numToStr/Comment.nvim',
+  'terrortylor/nvim-comment',
+  event = "VeryLazy",
   config = function()
-    require('Comment').setup({
-      --- Ativar mapeamentos básicos e extras
-      mappings = {
-        basic = true,   -- Mapeamentos básicos
-        extra = true,   -- Mapeamentos extras
-        extended = true -- Desativa mapeamentos estendidos se não forem necessários
-      },
-      --- Define o pré-hook para personalizar a string de comentário, removendo dependência do `ts_context_commentstring`
-      pre_hook = nil,
-      post_hook = nil
+    require('nvim_comment').setup({
+      -- Altere as opções aqui conforme necessário
+      marker_padding = true,
+      comment_empty = false,
+      create_mappings = true,
     })
   end
 }
+
