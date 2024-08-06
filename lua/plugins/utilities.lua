@@ -106,7 +106,7 @@ return {
       debug = false,
       notify = false,
     })
-    wk.register(maps)
+    wk.register(utils.format_keymaps(maps))
   end
 }
 
