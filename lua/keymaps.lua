@@ -1,316 +1,178 @@
-local utils = require('utils')
-return {
-  ["<leader>ks"] = { "<cmd>w<CR>", "Search keymaps", mode = "n" },
 
-  ["<leader>e"] = { "<cmd>NvimTreeToggle<CR>", "Toggle Explorer", mode = "n", group="File Explorer" },
-  ["<leader>er"] = { "<cmd>NvimTreeRename<CR>", "Rename", mode = "n", group="File Explorer" },
-  ["<leader>ec"] = { "<cmd>NvimTreeCopy<CR>", "Copy", mode = "n", group="File Explorer" },
-  ["<leader>em"] = { "<cmd>NvimTreeMove<CR>", "Move", mode = "n", group="File Explorer" },
-  ["<leader>ea"] = { "<cmd>NvimTreeCreate<CR>", "Create", mode = "n", group="File Explorer" },
-  ["<leader>ed"] = { "<cmd>NvimTreeRemove<CR>", "Delete", mode = "n", group="File Explorer" },
+return {
 
   -- Basic commands
-  ["<leader>w"] = { "<cmd>w<CR>", "Save", mode = "n", group="Basics" },
-  ["<leader>q"] = { "<cmd>q<CR>", "Quit", mode = "n", group="Basics"},
-  ["<leader>nc"] = { "<cmd>lua require('notify').dismiss()<CR>", "Close notification", mode = "n", group="Basics" },
-  ["<leader>bc"] = { "<cmd>enew<CR>", "Create new buffer", mode = "n", group="Basics" },
+  ["<leader>k"] = {
+name = " Common",
+    mode="n",
 
-  -- Window navigation
-  ["<leader>a"] = {
-    function()
-      require("nvim-window").pick()
-    end,
-    "Navigate between windows (nvim-window)",
-    mode = "n", 
-    group={"Basics", "Windows management", "Windows navigation"}
+    ["k"] = { ':lua require("telescope.builtin").keymaps()<CR>', 'Show keymaps'},
+    ["b"] = { function() require("which-key").show() end, "Show which-key panel"},
+    ["w"] = { "<cmd>w<CR>", "Save" },
+    ["q"] = { "<cmd>qa!<CR>", "Quit all buffers", },
+    ["c"] = { "<cmd>lua require('notify').dismiss()<CR>", "Close notification"},
+    ["n"] = { "<cmd>enew<CR>", "Create new buffer",  },
+    ["a"] = { function() require("nvim-window").pick() end, "Windows navigation"},
+    ["o"] = { function() require("functions").create_file() end, "Open File Manager (Oil)" },
   },
 
   -- Window management
-  ["<leader>sv"] = { ":vsp<CR>", "Vertical split", mode = "n", group="Windows management" },
-  ["<leader>sh"] = { ":sp<CR>", "Horizontal split", mode = "n", group="Windows management" },
-  ["<leader>wr"] = { ":WinResizerStartResize<CR>", "Resize window (WinResizer)", mode = "n", group="Windows management" },
-  ["<leader>wm"] = { "<cmd>WinShift<CR>", "Activate WinShift", mode = "n", group="Windows management" },
-  ["<leader>wh"] = { "<cmd>WinShiftLeft<CR>", "Move window left", mode = "n", group="Windows management" },
-  ["<leader>wj"] = { "<cmd>WinShiftDown<CR>", "Move window down", mode = "n", group="Windows management" },
-  ["<leader>wk"] = { "<cmd>WinShiftUp<CR>", "Move window up", mode = "n", group="Windows management" },
-  ["<leader>wl"] = { "<cmd>WinShiftRight<CR>", "Move window right", mode = "n", group="Windows management" },
-  ["<leader>rh"] = { "<cmd>WinShiftResizeLeft<CR>", "Resize window left", mode = "n", group="Windows management" },
-  ["<leader>rj"] = { "<cmd>WinShiftResizeDown<CR>", "Resize window down", mode = "n", group="Windows management" },
-  ["<leader>rk"] = { "<cmd>WinShiftResizeUp<CR>", "Resize window up", mode = "n", group="Windows management" },
-  ["<leader>rl"] = { "<cmd>WinShiftResizeRight<CR>", "Resize window right", mode = "n", group="Windows management" },
-
-  -- Buffer navigation
-  ["<leader>bj"] = { "<cmd>BufferLinePick<CR>", "Pick buffer", mode = "n", group="Buffers management" },
-  ["<leader>br"] = { "<cmd>BufferLineCloseRight<CR>", "Close buffers to the right", mode = "n", group="Buffers management" },
-  ["<leader>bl"] = { "<cmd>BufferLineCloseLeft<CR>", "Close buffers to the left", mode = "n", group="Buffers management" },
-  ["<leader>bo"] = { "<cmd>BufferLineCloseOthers<CR>", "Close other buffers", mode = "n", group="Buffers management" },
-  
-  ["<leader>bn"] = { "<cmd>BufferLineCycleNext<CR>", "Next buffer", mode = "n", group="Buffers navigation" },
-  ["<leader>bp"] = { "<cmd>BufferLineCyclePrev<CR>", "Previous buffer", mode = "n", group="Buffers navigation" },
-  ["<leader>bq"] = { "<cmd>BufferLinePickClose<CR>", "Pick and close buffer", mode = "n", group="Buffers navigation" },
-  ["<leader>b1"] = { "<cmd>BufferGoto 1<CR>", "Go to buffer 1", mode = "n", group="Buffers navigation" },
-  ["<leader>b2"] = { "<cmd>BufferGoto 2<CR>", "Go to buffer 2", mode = "n", group="Buffers navigation" },
-  ["<leader>b3"] = { "<cmd>BufferGoto 3<CR>", "Go to buffer 3", mode = "n", group="Buffers navigation" },
-  ["<leader>b4"] = { "<cmd>BufferGoto 4<CR>", "Go to buffer 4", mode = "n", group="Buffers navigation" },
-  ["<leader>b5"] = { "<cmd>BufferGoto 5<CR>", "Go to buffer 5", mode = "n", group="Buffers navigation" },
-  ["<leader>b6"] = { "<cmd>BufferGoto 6<CR>", "Go to buffer 6", mode = "n", group="Buffers navigation" },
-  ["<leader>b7"] = { "<cmd>BufferGoto 7<CR>", "Go to buffer 7", mode = "n", group="Buffers navigation" },
-  ["<leader>b8"] = { "<cmd>BufferGoto 8<CR>", "Go to buffer 8", mode = "n", group="Buffers navigation" },
-  ["<leader>b9"] = { "<cmd>BufferGoto 9<CR>", "Go to buffer 9", mode = "n", group="Buffers navigation" },
-  ["<leader>b0"] = { "<cmd>BufferGoto 10<CR>", "Go to buffer 10", mode = "n", group="Buffers navigation" },
-
-  -- Buscar no buffer
-  ["<leader>sr"] = { "<cmd>%s/<C-r><C-w>//gc<Left><Left>", "Substitute in buffer", mode = "n", group = "Search & Replace" },
-  ["<leader>sf"] = { "<cmd>lua require('telescope.builtin').grep_string({ search = vim.fn.input('Search for > ') })<CR>", "Find and navigate references", mode = "n", group = "Search & Replace" },
-  ["<leader>sc"] = { "<cmd>noh<CR>", "Clear search highlights", mode = "n", group = "Search & Replace" },
-  ["/"] = { "<cmd>/", "Start search", mode = "n", group = "Search & Replace" },
-  ["?"] = { "<cmd>?", "Start backward search", mode = "n", group = "Search & Replace" },
-  ["n"] = { "<cmd>n<CR>", "Next search result", mode = "n", group = "Search & Replace" },
-  ["b"] = { "<cmd>N<CR>", "Previous search result", mode = "n", group = "Search & Replace" },
-
-
-  -- Telescope
-  ["<leader>ff"] = {
-    function()
-      require("telescope.builtin").find_files()
-    end,
-    "Find files (Telescope)",
-    mode = "n",
-    group = "Files Search"
+  ["<leader>w"] = {
+    name = "Window",
+    mode="n",
+    ["s"] = {
+      name = "Split", -- Nome do subgrupo
+      ["v"] = { ":vsp<CR>", "Vertical split"},
+      ["h"] = { ":sp<CR>", "Horizontal split",  },
+    },
+    ["r"] = {
+      name = "Resize", -- Nome do subgrupo
+      ["h"] = { ":WinShiftResizeLeft<CR>", "Resize window left",  },
+      ["j"] = { ":WinShiftResizeDown<CR>", "Resize window down",  },
+      ["k"] = { ":WinShiftResizeUp<CR>", "Resize window up",  },
+      ["l"] = { ":WinShiftResizeRight<CR>", "Resize window right",  },
+    },
+    ["m"] = {
+      name = "Move", -- Nome do subgrupo
+      ["h"] = { "<cmd>WinShiftLeft<CR>", "Move window left",  },
+      ["j"] = { "<cmd>WinShiftDown<CR>", "Move window down",  },
+      ["k"] = { "<cmd>WinShiftUp<CR>", "Move window up",  },
+      ["l"] = { "<cmd>WinShiftRight<CR>", "Move window right",  },
+    },
+    ["n"] = {
+      name="Navigation",
+      ["a"] = { function() require("nvim-window").pick() end, "Windows navigation",  },
+    }
   },
-  ["<leader>fg"] = {
-    function()
-      require("telescope.builtin").live_grep()
-    end,
-    "Live grep (Telescope)",
-    mode = "n",
-    group = "Files Search"
+
+  -- Buffer management
+  ["<leader>b"] = {
+    name = "Buffers",
+    mode="n",
+    ["j"] = { "<cmd>BufferLinePick<CR>", "Pick buffer",  },
+    ["r"] = { "<cmd>BufferLineCloseRight<CR>", "Close buffers to the right",  },
+    ["c"] = { "<cmd>bd!<CR>", "Close current buffer" },
+    ["l"] = { "<cmd>BufferLineCloseLeft<CR>", "Close buffers to the left",  },
+    ["o"] = { "<cmd>BufferLineCloseOthers<CR>", "Close other buffers",  },
+    ["n"] = { "<cmd>BufferLineCycleNext<CR>", "Next buffer",  },
+    ["p"] = { "<cmd>BufferLineCyclePrev<CR>", "Previous buffer",  },
+    ["q"] = { "<cmd>BufferLinePickClose<CR>", "Pick and close buffer",  },
+    ["1"] = { "<cmd>BufferGoto 1<CR>", "Go to buffer 1",  },
+    ["2"] = { "<cmd>BufferGoto 2<CR>", "Go to buffer 2",  },
+    ["3"] = { "<cmd>BufferGoto 3<CR>", "Go to buffer 3",  },
+    ["4"] = { "<cmd>BufferGoto 4<CR>", "Go to buffer 4",  },
+    ["5"] = { "<cmd>BufferGoto 5<CR>", "Go to buffer 5",  },
+    ["6"] = { "<cmd>BufferGoto 6<CR>", "Go to buffer 6",  },
+    ["7"] = { "<cmd>BufferGoto 7<CR>", "Go to buffer 7",  },
+    ["8"] = { "<cmd>BufferGoto 8<CR>", "Go to buffer 8",  },
+    ["9"] = { "<cmd>BufferGoto 9<CR>", "Go to buffer 9",  },
+    ["0"] = { "<cmd>BufferGoto 10<CR>", "Go to buffer 10",  },
   },
-  ["<leader>fb"] = {
-    function()
-      require("telescope.builtin").buffers()
-    end,
-    "List buffers (Telescope)",
-    mode = "n",
-    group = "Files Search"
+
+  -- Search & Replace
+  ["<leader>s"] = {
+    name = "Search & Replace",
+    mode="n",
+    ["r"] = { "<cmd>%s/<C-r><C-w>//gc<Left><Left>", "replace local ocurrences",  },
+    ["g"] = { "<cmd>lua require('telescope.builtin').grep_string({ search = vim.fn.input('Search for > ') })<CR>", "Find global references",  },
+    ["c"] = { "<cmd>noh<CR>", "Clear highlights",  },
+    ["s"] = { "<cmd>/", "Start search",  },
+    ["b"] = { "<cmd>?", "Start backward search",  },
+    ["n"] = { "<cmd>n<CR>", "Next search result",  },
+    ["p"] = { "<cmd>N<CR>", "Previous search result",  },
+  }, 
+
+  -- Nvim-tree
+  ["<leader>e"] = {
+    name = "File Explorer",
+    mode="n",
+    ["t"] = { "<cmd>NvimTreeToggle<CR>", "Toggle Explorer",  },
+    ["r"] = { "<cmd>NvimTreeRename<CR>", "Rename",  },
+    ["c"] = { "<cmd>NvimTreeCopy<CR>", "Copy",  },
+    ["x"] = { "<cmd>NvimTreeMove<CR>", "Move",  },
+    ["a"] = { "<cmd>NvimTreeCreate<CR>", "Create",  },
+    ["d"] = { "<cmd>NvimTreeRemove<CR>", "Delete",  },
   },
-  ["<leader>fh"] = {
-    function()
-      require("telescope.builtin").help_tags()
-    end,
-    "Help tags (Telescope)",
-    mode = "n",
-    group = "Files Search"
+
+--File Manager
+  ["<leader>f"] = {
+    mode="n",
+    name = "File Manager",
+    ["f"] = { function() require("telescope.builtin").find_files() end, "Find files (Telescope)",  },
+    ["g"] = { function() require("telescope.builtin").live_grep() end, "Live grep (Telescope)",  },
+    ["b"] = { function() require("telescope.builtin").buffers() end, "List buffers (Telescope)",  },
+    ["h"] = { function() require("telescope.builtin").help_tags() end, "Help tags (Telescope)",  },
+
+    -- Oil File Browser
+    ["o"] = { function() require("functions").create_file() end, "Open File Manager (Oil)" },
+    ["t"] = { function() require('oil').toggle_hidden() end, "Toggle Hidden Files" },
+    ["r"] = { function() require('oil').rename() end, "Rename File or Directory" },
+    ["c"] = { function() require('oil').copy() end, "Copy File or Directory" },
+    ["x"] = { function() require('oil').move() end, "Move File or Directory" },
+    ["a"] = { function() require('oil').new() end, "Create New File or Directory" },
+    ["d"] = { function() require('oil').delete() end, "Delete File or Directory" },
   },
 
   -- Harpoon
-  ["<leader>fa"] = {
-    function()
-      require("harpoon").mark.add_file()
-    end,
-    "Add file to Harpoon",
-    mode = "n",
-    group = "Files Navigation"
-  },
-  ["<leader>fe"] = {
-    function()
-      require("harpoon").ui.toggle_quick_menu()
-    end,
-    "Toggle Harpoon quick menu",
-    mode = "n",
-    group = "Files Navigation"
-  },
-  ["<leader>f1"] = {
-    function()
-      require("harpoon").ui.nav_file(1)
-    end,
-    "Navigate to file 1 in Harpoon",
-    mode = "n",
-    group = "Files Navigation"
-  },
-  ["<leader>f2"] = {
-    function()
-      require("harpoon").ui.nav_file(2)
-    end,
-    "Navigate to file 2 in Harpoon",
-    mone = "n",
-    group = "Files Navigation"
-  },
-  ["<leader>f3"] = {
-    function()
-      require("harpoon").ui.nav_file(3)
-    end,
-    "Navigate to file 3 in Harpoon",
-    mode = "n",
-    group = "Files Navigation"
-  },
-  ["<leader>f4"] = {
-    function()
-      require("harpoon").ui.nav_file(4)
-    end,
-    "Navigate to file 4 in Harpoon",
-    mode = "n",
-    group = "Files Navigation"
-  },
-  ["<leader>fp"] = {
-    function()
-      require("harpoon").ui.nav_prev()
-    end,
-    "Navigate to previous file in Harpoon",
-    mode = "n",
-    group = "Files Navigation"
-  },
-  ["<leader>fn"] = {
-    function()
-      require("harpoon").ui.nav_next()
-    end,
-    "Navigate to next file in Harpoon",
-    mode = "n",
-    group = "Files Navigation"
+  ["<leader>h"] = {
+    name = "File Navigation",
+    mode="n",
+    ["a"] = { function() require("harpoon").mark.add_file() end, "Add file to Harpoon" },
+    ["t"] = { function() require("harpoon").ui.toggle_quick_menu() end, "Toggle Harpoon quick menu" },
+    ["1"] = { function() require("harpoon").ui.nav_file(1) end, "Navigate to file 1 in Harpoon" },
+    ["2"] = { function() require("harpoon").ui.nav_file(2) end, "Navigate to file 2 in Harpoon" },
+    ["3"] = { function() require("harpoon").ui.nav_file(3) end, "Navigate to file 3 in Harpoon" },
+    ["4"] = { function() require("harpoon").ui.nav_file(4) end, "Navigate to file 4 in Harpoon" },
+    ["p"] = { function() require("harpoon").ui.nav_prev() end, "Navigate to previous file in Harpoon" },
+    ["n"] = { function() require("harpoon").ui.nav_next() end, "Navigate to next file in Harpoon" },
   },
 
   -- Comments
-  ["<leader>cc"] = { "<cmd>CommentToggle<CR>", "Toggle line comment", mode = "n", group="Comments" },
-  ["<leader>cu"] = { "<cmd>CommentToggle<CR>", "Toggle line comment", mode = "v", group="Comments" },
-  ["<leader>cb"] = { "<cmd>lua require('nvim_comment').comment({blockwise = true})<CR>", "Toggle block comment", mode = "v", group="Comments" },
-
--- LSP
-  ["gd"] = {
-    function() vim.lsp.buf.definition() end,
-    desc = "Go to definition (LSP)",
-    mode = "n",
-    groudp = "Code Navigation"
-  },
-  ["gr"] = {
-    function() vim.lsp.buf.references() end,
-    desc = "References (LSP)",
-    mode = "n",
-    groudp = "Code Navigation"
-  },
-  ["gi"] = {
-    function() vim.lsp.buf.implementation() end,
-    desc = "Go to implementation (LSP)",
-    mode = "n",
-    groudp = "Code Navigation"
-  },
-  ["<leader>rn"] = {
-    function() vim.lsp.buf.rename() end,
-    desc = "Rename (LSP)",
-    mode = "n",
-    groudp = "Code utils"
-  },
-  ["<leader>ca"] = {
-    function() vim.lsp.buf.code_action() end,
-    desc = "Code action (LSP)",
-    mode = "n",
-    groudp = "Code Navigation"
-  },
-  ["<leader>f"] = {
-    function() vim.lsp.buf.format() end,
-    desc = "Format (LSP)",
-    mode = "n",
-    groudp = "Code utils"
-  },
-  ["<leader>ce"] = {
-    function() vim.diagnostic.open_float() end,
-    desc = "Open floating error",
-    mode = "n",
-    groudp = "Code Utils"
-  },
-  ["[d"] = {
-    function() vim.diagnostic.goto_prev() end,
-    desc = "Go to previous error",
-    mode = "n",
-    groudp = "Code Navigation"
-  },
-  ["]d"] = {
-    function() vim.diagnostic.goto_next() end,
-    desc = "Go to next error",
-    mode = "n",
-    groudp = "Code Navigation"
+  ["<leader>c"] = {
+    name = "Comments", 
+    mode="n",
+      ["l"] = { "<cmd>CommentToggle<CR>", "Toggle line comment" },
+      ["b"] = { "<cmd>lua require('nvim_comment').comment({blockwise = true})<CR>", "Toggle block comment" },
   },
 
-  -- Troubles
-  ["<leader>xx"] = {
-    "<cmd>Trouble diagnostics toggle<CR>",
-    desc = "Open/close Trouble",
-    mode = "n",
-    groudp = {"Code Utils", "Debugger Utils"}
+  -- LSP
+  ["<leader>n"] = {
+    name = "Code Navigation", 
+    mode="n",
+    ["d"] = { function() vim.lsp.buf.definition() end, "Go to definition (LSP)" },
+    ["r"] = { function() vim.lsp.buf.references() end, "References (LSP)" },
+    ["i"] = { function() vim.lsp.buf.implementation() end, "Go to implementation (LSP)" },
+    ["rn"] = { function() vim.lsp.buf.rename() end, "Rename (LSP)" },
+    ["ca"] = { function() vim.lsp.buf.code_action() end, "Code action (LSP)" },
+    ["f"] = { function() vim.lsp.buf.format() end, "Format (LSP)" },
+    ["ce"] = { function() vim.diagnostic.open_float() end, "Open floating error" },
+    ["[d"] = { function() vim.diagnostic.goto_prev() end, "Go to previous error" },
+    ["]d"] = { function() vim.diagnostic.goto_next() end, "Go to next error" },
   },
 
-  -- TypeScript tools (comentado)
-  -- ["<leader>oi"] = {
-  --   ":TSToolsOrganizeImports<CR>",
-  --   desc = "Organize imports (TypeScript)",
-  --   mode = "n"
-  -- },
-  -- ["<leader>si"] = {
-  --   ":TSToolsSortImports<CR>",
-  --   desc = "Sort imports (TypeScript)",
-  --   mode = "n"
-  -- },
-  -- ["<leader>ri"] = {
-  --   ":TSToolsRemoveUnusedImports<CR>",
-  --   desc = "Remove unused imports (TypeScript)",
-  --   mode = "n"
-  -- },
-  -- ["<leader>ru"] = {
-  --   ":TSToolsRemoveUnused<CR>",
-  --   desc = "Remove unused code (TypeScript)",
-  --   mode = "n"
-  -- },
-  -- ["<leader>ai"] = {
-  --   ":TSToolsAddMissingImports<CR>",
-  --   desc = "Add missing imports (TypeScript)",
-  --   mode = "n"
-  -- },
-  -- ["<leader>fa"] = {
-  --   ":TSToolsFixAll<CR>",
-  --   desc = "Fix all errors (TypeScript)",
-  --   mode = "n"
-  -- },
-  -- ["<leader>gsd"] = {
-  --   ":TSToolsGoToSourceDefinition<CR>",
-  --   desc = "Go to source definition (TypeScript)",
-  --   mode = "n"
-  -- },
-  -- ["<leader>rf"] = {
-  --   ":TSToolsRenameFile<CR>",
-  --   desc = "Rename file (TypeScript)",
-  --   mode = "n"
-  -- },
-  -- ["<leader>fr"] = {
-  --   ":TSToolsFileReferences<CR>",
-  --   desc = "Find file references (TypeScript)",
-  --   mode = "n"
-  -- },
+   
+  ["<leader>d"] = {
+    name = "Debugger",
+    mode="n",
+    ["x"] = { "<cmd>Trouble diagnostics toggle<CR>", "Toggle diagnostics" },
+    ["t"] = { "<cmd>lua require'dap'.toggle_breakpoint()<CR>", "Toggle breakpoint" },
+    ["r"] = { "<cmd>lua require'dap'.repl.open()<CR>", "Open REPL" },
+    ["l"] = { "<cmd>lua require'dap'.run_last()<CR>", "Run last" },
+    ["b"] = { "<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", "Set conditional breakpoint" },
+    ["p"] = { "<cmd>lua require'dap'.pause()<CR>", "Pause debugging" },
+    ["f"] = { "<cmd>lua require'dap'.terminate()<CR>", "Finish debugging" },
+    
+    ["<F5>"] = { "<cmd>lua require('dap_ui').select_dap_config()<CR>", "Start debugging" },
+    ["<F10>"] = { "<cmd>lua require'dap'.step_over()<CR>", "Step over" },
+    ["<F11>"] = { "<cmd>lua require'dap'.step_into()<CR>", "Step into" },
+    ["<F12>"] = { "<cmd>lua require'dap'.step_out()<CR>", "Step out" },
+  },
 
-  -- Autocomplete (cmp)
-  ["<C-n>"] = {
-    function() require("cmp").mapping.select_next_item() end,
-    desc = "Next item in suggestion list",
-    mode = "i",
-    group = "Code Navigation"
-  },
-  ["<C-p>"] = {
-    function() require("cmp").mapping.select_prev_item() end,
-    desc = "Previous item in suggestion list",
-    mode = "i",
-    group = "Code Navigation"
-  },
-  ["<C-e>"] = {
-    function() require("cmp").mapping.close() end,
-    desc = "Close suggestion window",
-    mode = "i",
-    group = "Code Navigation"
-  },
 
   -- Emmet
-  ["<C-y>"] = {
-    "<Plug>(emmet-expand-abbr)",
-    desc = "Expand Emmet abbreviation",
-    mode = "i",
-    group = "Code Utils"
-  },
+  ["<Tab>"] = {
+    name="Emmet",
+    mode={"i","v"},
+    ["<e>"] = { function() require('emmet').expand_abbreviation() end, "Expand Emmet abbreviation" },
+  }
 }
-

@@ -6,7 +6,6 @@ return {
     -- Carregue o plugin
     local wk = require("which-key")
     local maps = require('keymaps')
-    local utils = require('utils')
 
     -- Configure o which-key
     wk.setup({
@@ -22,7 +21,7 @@ return {
 
       -- Plugins habilitados
       plugins = {
-        marks = false,
+        marks = true,
         registers = true,
         spelling = {
           enabled = false,
@@ -60,7 +59,7 @@ return {
       },
 
       -- Ordenação dos mapeamentos
-      sort = { "local", "order", "group", "alphanum", "mod" },
+      sort = {  "order" },
 
       -- Expansão dos grupos
       expand = 0,
@@ -90,7 +89,7 @@ return {
         separator = "➜",
         group = "+",
         ellipsis = "…",
-        mappings = true,
+        mappings = false,
         colors = true,
       },
 
@@ -106,7 +105,7 @@ return {
       debug = false,
       notify = false,
     })
-    wk.register(utils.format_keymaps(maps))
+    wk.register(maps, { prefix = "" })
   end
 }
 

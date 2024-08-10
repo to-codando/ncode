@@ -29,8 +29,8 @@ vim.opt.hlsearch = true   -- Destacar pesquisas
 -- Janelas e Buffers
 vim.opt.splitbelow = true -- Dividir janelas horizontalmente abaixo
 vim.opt.splitright = true -- Dividir janelas verticalmente à direita
-vim.opt.scrolloff = 8     -- Manter 8 linhas visíveis acima e abaixo do cursor
-vim.opt.sidescrolloff = 8 -- Manter 8 colunas visíveis à esquerda e à direita do cursor
+vim.opt.scrolloff = 0     -- Manter 8 linhas visíveis acima e abaixo do cursor
+vim.opt.sidescrolloff = 0 -- Manter 8 colunas visíveis à esquerda e à direita do cursor
 vim.opt.hidden = true     -- Permitir alternar entre buffers sem salvar
 vim.opt.swapfile = false  -- Desativar arquivos de swap
 vim.opt.backup = false    -- Desativar arquivos de backup

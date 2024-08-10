@@ -3,12 +3,8 @@
 return {
   servers = {'html', 'cssls', 'tsserver', 'lua_ls', 'biome'}, -- servidores lsp padrão
   settings = {
-    html = {
-      -- Configurações adicionais para html
-    },
-    cssls = {
-      -- Configurações adicionais para cssls
-    },
+    html = {},
+    cssls = {},
     tsserver = {
       on_attach = function(client, bufnr)
         local tsserver_settings = {
@@ -25,9 +21,7 @@ return {
         client.config.settings.typescript.preferences.importModuleSpecifierPreference = "relative"
       end,
     },
-    lua_ls = {
-      -- Configurações adicionais para lua_ls
-    },
+    lua_ls = {},
     emmet_ls = {},
     biome = {},
 

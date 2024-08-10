@@ -1,4 +1,3 @@
--- ~/.config/nvim/lua/plugins/nvim-tree.lua
 return {
   {
     "ThePrimeagen/harpoon",
@@ -7,7 +6,11 @@ return {
   },
   {
     'nvim-telescope/telescope.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' }
+    dependencies = {'nvim-lua/plenary.nvim'},
+    config = function()
+      local telescope = require('telescope')
+      telescope.setup()
+    end
   },
   {
     'nvim-tree/nvim-tree.lua',
@@ -20,23 +23,23 @@ return {
         renderer = {
           icons = {
             glyphs = {
-              default = "", -- Ícone para arquivos padrão
-              symlink = "", -- Ícone para symlinks
+              default = "",
+              symlink = "",
               git = {
-                unstaged = "⏺", -- Ícone para arquivos não stageados
-                staged = "", -- Ícone para arquivos stageados
-                unmerged = "", -- Ícone para arquivos não mesclados
-                renamed = "󰷉", -- Ícone para arquivos renomeados
-                deleted = "", -- Ícone para arquivos deletados
-                untracked = "", -- Ícone para arquivos não rastreados
-                ignored = "", -- Ícone para arquivos ignorados
+                unstaged = "⏺",
+                staged = "",
+                unmerged = "",
+                renamed = "󰷉",
+                deleted = "",
+                untracked = "",
+                ignored = "",
               },
               folder = {
-                default = "", -- Ícone para pastas padrão
-                open = "", -- Ícone para pastas abertas
-                empty = "", -- Ícone para pastas vazias
-                empty_open = "", -- Ícone para pastas vazias abertas
-                symlink = "", -- Ícone para symlinks de pasta
+                default = "",
+                open = "",
+                empty = "",
+                empty_open = "",
+                symlink = "",
               },
             },
           },
@@ -77,3 +80,4 @@ return {
     end
   }
 }
+

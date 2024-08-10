@@ -16,8 +16,10 @@ end
 
 return {
   -- Plugins fixos que sempre devem ser instalados
-  {"nvim-neotest/nvim-nio"},
-  { "nvim-neotest/nvim-nio", dependencies = {"nvim-neotest/nvim-nio"}},
+  {
+    "nvim-neotest/nvim-nio",
+    dependencies = { "nvim-neotest/nvim-nio" },
+  },
   {
     'mfussenegger/nvim-dap',
     dependencies = { 'rcarriga/nvim-dap-ui' },
@@ -89,5 +91,4 @@ return {
 
   -- Aqui você pode adicionar outros plugins fixos ou essenciais se necessário
 }
-
 
