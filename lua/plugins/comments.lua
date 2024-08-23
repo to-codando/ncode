@@ -1,15 +1,24 @@
 -- ~/.config/nvim/lua/plugins/comment.lua
--- ~/.config/nvim/lua/plugins/comment.lua
 return {
-  'terrortylor/nvim-comment',
-  event = "VeryLazy",
-  config = function()
-    require('nvim_comment').setup({
-      -- Altere as opções aqui conforme necessário
-      marker_padding = true,
-      comment_empty = false,
-      create_mappings = true,
-    })
-  end
+  {
+    'numToStr/Comment.nvim',
+    config = function()
+      require('Comment').setup({
+        -- configuracoes aqui
+        toggler = {
+          line = 'gcc', -- Atalho para comentar/descomentar linha
+          block = 'gbc', -- Atalho para comentar/descomentar bloco
+        },
+        opleader = {
+          line = 'gc', -- Atalho para comentar/descomentar linha em modo visual
+          block = 'gb', -- Atalho para comentar/descomentar bloco em modo visual
+        },
+        mappings = {
+          basic = true,
+          extra = true,
+          extended = false,
+        },
+      })
+    end,
+  },
 }
-

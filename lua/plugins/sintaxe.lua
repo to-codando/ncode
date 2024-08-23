@@ -1,19 +1,49 @@
 -- ~/.config/nvim/lua/plugins/treesitter.lua
 
 return {
--- {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
--- {'neovim/nvim-lspconfig'},
--- {'hrsh7th/cmp-nvim-lsp'},
--- {'hrsh7th/nvim-cmp'},
--- {'L3MON4D3/LuaSnip'},
+  {
+    "gpanders/editorconfig.nvim",
+    event = "BufReadPre",
+    config = function()
+      vim.g.editorconfig = true
+    end,
+  },
+  {
+    'jmbuhr/otter.nvim',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+    },
+    config = function()
+      local otter = require('otter')
+      local function activate_otter()
+        otter.activate()
+      end
+      otter.setup()
+      vim.api.nvim_create_autocmd(
+        { "BufRead", "BufNewFile" }, {
+          callback = activate_otter,
+        })
+    end
+  },
   {
     "nvim-treesitter/nvim-treesitter",
-    run = ':TSUpdate',
+    run = ":TSUpdate",
     config = function()
-      local ts_config = require('nvim-treesitter.configs')
+      local ts_config = require("nvim-treesitter.configs")
       ts_config.setup({
         ensure_installed = {
-          "typescript", "javascript", "tsx", "html", "css", "lua", "rust", "php"
+          "typescript",
+          "javascript",
+          "tsx",
+          "html",
+          "css",
+          "scss",
+          "astro",
+          "angular",
+          "vue",
+          "lua",
+          "rust",
+          "php",
         },
         highlight = {
           enable = true,
@@ -27,17 +57,68 @@ return {
           enable_autocmd = false,
         },
         autotag = {
-          enable = true,
+          enable = false,
         },
-        -- Configura linguagens injetadas
         playground = {
           enable = true,
         },
         injection = {
           enable = true,
+          injections = {
+            javascript = {
+              ["html"] = {
+                query = [[
+      (template_string) @html
+      ]],
+              },
+              ["tsx"] = {
+                query = [[
+      (template_string) @tsx
+      ]],
+              },
+              ["jsx"] = {
+                query = [[
+      (template_string) @jsx
+      ]],
+              },
+              ["css"] = {
+                query = [[
+(call_expression
+  function: (identifier) @function_name
+  arguments: ((template_string) @injection.content
+    (#offset! @injection.content 0 1 0 -1)
+    (#set! injection.include-children)
+    (#set! injection.language "css"))
+  (#match? @function_name "css" "keyframes"))
+      ]],
+              },
+            },
+            typescript = {
+              ["html"] = {
+                query = [[
+      (template_string) @html
+      ]],
+              },
+              ["tsx"] = {
+                query = [[
+      (template_string) @tsx
+      ]],
+              },
+              ["css"] = {
+                query = [[
+(call_expression
+  function: (identifier) @function_name
+  arguments: ((template_string) @injection.content
+    (#offset! @injection.content 0 1 0 -1)
+    (#set! injection.include-children)
+    (#set! injection.language "css"))
+  (#match? @function_name "css" "keyframes"))
+      ]],
+              },
+            },
+          }
         },
-
       })
-    end
+    end,
   },
 }

@@ -43,6 +43,25 @@
   (#set! injection.include-children)
   (#set! injection.language "html"))
 
+; Vercel PostgreSQL
+; foo.sql`...` or foo.sql(`...`)
+(call_expression
+  function: [
+    (await_expression
+      (member_expression
+        property: (property_identifier) @injection.language))
+    (member_expression
+      property: (property_identifier) @injection.language)
+  ]
+  arguments: [
+    (arguments
+      (template_string) @injection.content)
+    (template_string) @injection.content
+  ]
+  (#eq? @injection.language "sql")
+  (#offset! @injection.content 0 1 0 -1)
+  (#set! injection.include-children))
+
 (call_expression
   function: [
     (await_expression
@@ -215,25 +234,12 @@
             (#offset! @injection.content 0 1 0 -1)
             (#set! injection.language "css")))))))
 
-; IARES-------------------------------------
-; Captura literais template com a tag `html`
-((template_string) @injection.content
-  (#lua-match? @injection.content "^`html")
-  (#offset! @injection.content 0 1 0 -1)
-  (#set! injection.include-children)
-  (#set! injection.language "html"))
-
-
-; highlight css literal template
+;_______________iares___________________________________
+; Injetar a linguagem CSS em template literals marcados como `css` ou `keyframes`
 (call_expression
-  function: [
-    (await_expression
-      (identifier) @_name
-      (#eq? @_name "css"))
-    ((identifier) @_name
-      (#eq? @_name "css"))
-  ]
+  function: (identifier) @function_name
   arguments: ((template_string) @injection.content
-    (#offset! @injection.content 0 0 0 0)
+    (#offset! @injection.content 0 1 0 -1)
     (#set! injection.include-children)
-    (#set! injection.language "css")))
+    (#set! injection.language "css"))
+  (#match? @function_name "css" "keyframes"))

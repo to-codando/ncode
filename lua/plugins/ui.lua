@@ -5,26 +5,42 @@ return {
     "MunifTanjim/nui.nvim",
   },
   {
-    "rcarriga/nvim-notify",
-  --  enabled = false,
+    "rachartier/tiny-devicons-auto-colors.nvim",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons"
+    },
+    event = "VeryLazy",
     config = function()
-    local notify = require("notify")
+      require('tiny-devicons-auto-colors').setup()
+    end
+  },
+  {
+    "rcarriga/nvim-notify",
+    --  enabled = false,
+    config = function()
+      local notify = require("notify")
 
-    -- Configuração básica
-    notify.setup({
-      stages = "slide",
-      timeout = 1000, -- Tempo em milissegundos
-      background_colour = "#000000",
-    })
+      -- Configuração básica
+      notify.setup({
+        stages = "slide",
+        timeout = 2000, -- Tempo em milissegundos
+        background_colour = "#000000",
+      })
 
-    -- Suprime os warnings
-    vim.notify = function(msg, level, opts)
-      if level == "WARN" then
-        return -- Não exibe warnings
+      -- Suprime os warnings
+      vim.notify = function(msg, level, opts)
+        if level == "INFO" then
+          return -- Não exibe warnings
+        end
+        if level == "WARN" then
+          return -- Não exibe warnings
+        end
+        if msg:match("ALE") then
+          return
+        end
+        notify(msg, level, opts)
       end
-      notify(msg, level, opts)
-    end
-    end
+    end,
   },
   {
     "folke/noice.nvim",
@@ -34,37 +50,36 @@ return {
       "rcarriga/nvim-notify",
     },
     config = function()
-    local noice = require("noice")
-    noice.setup({
-      -- Configuração para suprimir warnings
-      lsp = {
-        signature = {
-          enabled = false, -- Desativa a exibição de assinaturas de função
+      local noice = require("noice")
+      noice.setup({
+        -- Configuração para suprimir warnings
+        lsp = {
+          signature = {
+            enabled = false, -- Desativa a exibição de assinaturas de função
+          },
+          progress = {
+            enabled = false, -- Desativa a exibição de progresso do LSP
+          },
+          hover = {
+            enabled = false, -- Desativa a exibição de hover do LSP
+          },
+          message = {
+            enabled = false, -- Desativa a exibição de mensagens do LSP
+          },
+          diagnostic = {
+            enabled = false, -- Desativa a exibição de diagnósticos (warnings e erros)
+          },
         },
-        progress = {
-          enabled = false, -- Desativa a exibição de progresso do LSP
+        messages = {
+          enabled = true,  -- Exibe mensagens de erro
+          view = "notify", -- Redireciona mensagens para o nvim-notify
         },
-        hover = {
-          enabled = false, -- Desativa a exibição de hover do LSP
+        notify = {
+          -- Integração com nvim-notify
+          enabled = true,
         },
-        message = {
-          enabled = false, -- Desativa a exibição de mensagens do LSP
-        },
-        diagnostic = {
-          enabled = false, -- Desativa a exibição de diagnósticos (warnings e erros)
-        }
-      },
-      messages = {
-        enabled = true, -- Exibe mensagens de erro
-        view = "notify", -- Redireciona mensagens para o nvim-notify
-      },
-      notify = {
-        -- Integração com nvim-notify
-        enabled = true,
-      },
-    })
-
-    end
+      })
+    end,
   },
   {
     "catppuccin/nvim",
@@ -102,7 +117,6 @@ return {
               DapLogPoint = { fg = colors.green, bg = colors.none },
               DapStopped = { fg = colors.blue, bg = colors.none },
 
-
               -- Ajustes para o menu
               MenuItem = { bg = colors.surface1, fg = colors.text },
               MenuItemSelected = { bg = colors.mantle, fg = colors.green },
@@ -113,7 +127,5 @@ return {
       })
       vim.cmd.colorscheme("catppuccin")
     end,
-  }
+  },
 }
-
-

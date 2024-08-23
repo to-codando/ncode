@@ -1,30 +1,40 @@
 -- ~/.config/nvim/lua/lsps.lua
 
 return {
-  servers = {'html', 'cssls', 'tsserver', 'lua_ls', 'biome'}, -- servidores lsp padrão
+  servers = {
+    "html",
+    "cssls",
+    "emmet_ls",
+    "tsserver",
+    "lua_ls",
+  }, -- servidores lsp padrão
   settings = {
     html = {},
     cssls = {},
     tsserver = {
       on_attach = function(client, bufnr)
-        local tsserver_settings = {
-          preferences = {
-            importModuleSpecifierPreference = "relative",
-          },
-        }
-
-        client.config.settings = vim.tbl_deep_extend("force", client.config.settings or {}, tsserver_settings)
-
-        -- Configuração para resolver aliases de módulo
-        client.config.settings.typescript = client.config.settings.typescript or {}
-        client.config.settings.typescript.preferences = client.config.settings.typescript.preferences or {}
-        client.config.settings.typescript.preferences.importModuleSpecifierPreference = "relative"
+        -- Desativar formatação automática e linting
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentRangeFormattingProvider = false
+        client.server_capabilities.codeActionProvider = false
+        client.server_capabilities.hoverProvider = false
       end,
+      settings = {
+        tsserver = {
+          diagnostic = false -- Desativa o linting do tsserver
+        }
+      }
     },
     lua_ls = {},
-    emmet_ls = {},
-    biome = {},
-
-  }
+    emmet_ls = {
+      filetypes = { "html", "css", "javascript", "typescript", "javascriptreact", "typescriptreact" }, -- Adicione ou remova conforme necessário
+      init_options = {
+        html = {
+          options = {
+            ["bem.enabled"] = true, -- Exemplo de configuração do Emmet
+          },
+        },
+      },
+    },
+  },
 }
-

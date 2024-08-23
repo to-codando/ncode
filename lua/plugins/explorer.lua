@@ -9,7 +9,17 @@ return {
     dependencies = {'nvim-lua/plenary.nvim'},
     config = function()
       local telescope = require('telescope')
-      telescope.setup()
+      telescope.setup({
+        defaults = {
+          file_ignore_patterns = {},  -- Certifique-se de que essa configuração esteja vazia se você não quiser ignorar nenhum arquivo
+          hidden = true,  -- Habilita a exibição de arquivos ocultos
+        },
+        pickers = {
+          find_files = {
+            hidden = true,  -- Inclui arquivos ocultos na pesquisa de arquivos
+          },
+        },
+      })
     end
   },
   {
