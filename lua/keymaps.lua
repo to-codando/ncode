@@ -3,6 +3,8 @@ local wk = require("which-key")
 local utils = require("utils")
 
 local commander = utils.commander_creator()
+-- Armazene a instância no global para fácil acesso
+_G.commander = commander
 
 wk.register({
   ["o"] = { function() require("functions").create_file() end, "Create file" },
@@ -78,11 +80,11 @@ wk.register({
 wk.register({
     ["r"] = {
       function()
-        local word = vim.fn.expand("<cword>")                             -- Obtém a palavra sob o cursor
+        local word = vim.fn.expand("<cword>")                               -- Obtém a palavra sob o cursor
         local replacement = vim.fn.input("Replace '" .. word .. "' with: ") -- Solicita o novo valor
-        if replacement ~= "" then                                         -- Verifica se o usuário forneceu um valor
+        if replacement ~= "" then                                           -- Verifica se o usuário forneceu um valor
           local cmd = string.format("%%s/%s/%s/gc", vim.fn.escape(word, "/"), vim.fn.escape(replacement, "/"))
-          vim.cmd(cmd)                                                    -- Executa o comando de substituição com confirmação
+          vim.cmd(cmd)                                                      -- Executa o comando de substituição com confirmação
         end
       end,
       "Replace local occurrences"
@@ -114,8 +116,8 @@ wk.register({
     }, -- Navega para o resultado anterior da pesquisa
   },
   {
-    mode = "n",              -- Modo normal
-    prefix = "<leader>s",    -- Prefixo específico
+    mode = "n",                -- Modo normal
+    prefix = "<leader>s",      -- Prefixo específico
     name = "Search & Replace", -- Nome do grupo
   })
 
@@ -382,7 +384,7 @@ wk.register({
 -- Mapeia a tecla para repetir o último comando
 wk.register({
   function() commander.repeat_last() end, "Repeat Last Motion"
-}, { mode = "n", prefix = "<leader>r", name = "Repeat Text Motion" })
+}, { mode = "n", prefix = ".", name = "Repeat Text Motion" })
 
 -- Registra os keymaps para o vim-visual-multi
 wk.register({

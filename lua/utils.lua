@@ -158,37 +158,51 @@ local function uninstall_plugins()
 end
 
 -- Função fábrica para criar um objeto de registro e repetição de comandos
+-- Função fábrica para criar um objeto de registro e repetição de comandos
 local function commander_creator()
   local last_command = ""
-  local last_command_type = "" -- Para diferenciar entre "<Plug>" e "<Cmd>"
+  local last_command_type = ""
+  local last_command_time = 0 -- Marca o tempo do último comando registrado
+  local last_dot_time = 0     -- Marca o tempo do último comando executado pelo operador "."
 
   -- Função para registrar e executar o comando
   local function register(command)
-    -- Armazena o comando e seu tipo (tipo de comando)
+    -- Armazena o comando, seu tipo e o tempo de execução
     last_command = command
     last_command_type = command:match("<Plug>") and "plug" or "cmd"
+    last_command_time = os.time() -- Atualiza a marcação de tempo
 
     -- Executa o comando registrado imediatamente
     if last_command_type == "plug" then
-      -- Usando `vim.api.nvim_feedkeys` para comandos "<Plug>"
       vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(command, true, false, true), 'n', true)
     else
-      -- Usando `vim.api.nvim_command` para comandos "<Cmd>"
-      -- Remove os caracteres `<Cmd>` e `</Cmd>` se presentes
       local clean_command = command:gsub("<Cmd>", ""):gsub("</Cmd>", "")
       vim.api.nvim_command(clean_command)
     end
+
+    -- Atualiza a marcação de tempo para o operador "."
+    last_dot_time = 0 -- Reseta o tempo do operador "." para evitar conflito
   end
 
   -- Função para repetir o último comando registrado
   local function repeat_last()
-    if last_command ~= "" then
+    local current_dot_command = vim.fn.getreg('1') -- O comando mais recente associado ao operador "."
+    local current_time = os.time()
+
+    -- Verifica se o operador "." foi usado mais recentemente que o último comando registrado
+    if last_dot_time > last_command_time then
+      -- Executa o comando do operador "."
+      vim.api.nvim_feedkeys('.', 'n', true)
+
+      -- Atualiza last_command com o comando do operador "."
+      last_command = current_dot_command
+      last_command_type = "dot"
+      last_command_time = last_dot_time
+    elseif last_command ~= "" then
+      -- Executa o último comando registrado pelo commander_creator
       if last_command_type == "plug" then
-        -- Repetir o comando "<Plug>"
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(last_command, true, false, true), 'n', true)
       else
-        -- Repetir o comando "<Cmd>"
-        -- Remove os caracteres `<Cmd>` e `</Cmd>` se presentes
         local clean_command = last_command:gsub("<Cmd>", ""):gsub("</Cmd>", "")
         vim.api.nvim_command(clean_command)
       end
@@ -197,9 +211,15 @@ local function commander_creator()
     end
   end
 
+  -- Função para atualizar a marcação de tempo do operador "."
+  local function update_dot_time()
+    last_dot_time = os.time()
+  end
+
   return {
     register = register,
-    repeat_last = repeat_last
+    repeat_last = repeat_last,
+    update_dot_time = update_dot_time
   }
 end
 

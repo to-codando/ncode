@@ -22,3 +22,11 @@ vim.api.nvim_create_autocmd('User', {
     end)
   end,
 })
+
+-- Configure o autocmd para chamar update_dot_time quando o texto mudar
+vim.api.nvim_exec([[
+  augroup CommanderDotCapture
+    autocmd!
+    autocmd TextChanged,TextChangedI * lua _G.commander.update_dot_time()
+  augroup END
+]], false)
