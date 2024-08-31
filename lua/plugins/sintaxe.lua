@@ -2,13 +2,6 @@
 
 return {
   {
-    "gpanders/editorconfig.nvim",
-    event = "BufReadPre",
-    config = function()
-      vim.g.editorconfig = true
-    end,
-  },
-  {
     'jmbuhr/otter.nvim',
     dependencies = {
       'nvim-treesitter/nvim-treesitter',
@@ -16,13 +9,46 @@ return {
     config = function()
       local otter = require('otter')
       local function activate_otter()
-        otter.activate()
+        otter.activate({ filetype = "ts" })
       end
-      otter.setup()
-      vim.api.nvim_create_autocmd(
-        { "BufRead", "BufNewFile" }, {
-          callback = activate_otter,
-        })
+      otter.setup({
+        -- Configuração para o tipo de arquivo `.custom`
+        filetypes = {
+          typescript = {
+            embedded_languages = {
+              html = true,
+              javascript = true,
+              mdx = true,
+              jsx = true,
+              tsx = true,
+              css = true,
+            },
+          },
+          custom_syntax = {
+            ["css`"] = "css",
+            ["jsx`"] = "jsx",
+            ["tsx`"] = "tsx",
+            ["html`"] = "tsx",
+          },
+        },
+      })
+      vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+        pattern = "*.ts",
+        callback = function()
+          require('otter').activate({ filetype = "typescript" })
+        end,
+      })
+    end
+  },
+  {
+    'maxmellon/vim-jsx-pretty',
+    ft = { 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' }, -- Garante que o plugin seja carregado para esses tipos de arquivo
+    config = function()
+      -- Configurações específicas do vim-jsx-pretty
+      vim.g.vim_jsx_pretty_template_tags = { 'html', 'jsx', 'tsx', 'mdx' } -- Habilita destaque de JSX dentro de literais de template
+      vim.g.vim_jsx_pretty_disable_js = 0                                  -- Não desabilitar destaque para arquivos js
+      vim.g.vim_jsx_pretty_disable_tsx = 0                                 -- Não desabilitar destaque para arquivos tsx
+      vim.g.vim_jsx_pretty_colorful_config = 1                             -- Habilita configuração colorida (opcional)
     end
   },
   {
@@ -64,59 +90,6 @@ return {
         },
         injection = {
           enable = true,
-          injections = {
-            javascript = {
-              ["html"] = {
-                query = [[
-      (template_string) @html
-      ]],
-              },
-              ["tsx"] = {
-                query = [[
-      (template_string) @tsx
-      ]],
-              },
-              ["jsx"] = {
-                query = [[
-      (template_string) @jsx
-      ]],
-              },
-              ["css"] = {
-                query = [[
-(call_expression
-  function: (identifier) @function_name
-  arguments: ((template_string) @injection.content
-    (#offset! @injection.content 0 1 0 -1)
-    (#set! injection.include-children)
-    (#set! injection.language "css"))
-  (#match? @function_name "css" "keyframes"))
-      ]],
-              },
-            },
-            typescript = {
-              ["html"] = {
-                query = [[
-      (template_string) @html
-      ]],
-              },
-              ["tsx"] = {
-                query = [[
-      (template_string) @tsx
-      ]],
-              },
-              ["css"] = {
-                query = [[
-(call_expression
-  function: (identifier) @function_name
-  arguments: ((template_string) @injection.content
-    (#offset! @injection.content 0 1 0 -1)
-    (#set! injection.include-children)
-    (#set! injection.language "css"))
-  (#match? @function_name "css" "keyframes"))
-      ]],
-              },
-            },
-          }
         },
       })
     end,

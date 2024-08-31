@@ -1,4 +1,8 @@
 -- ~/.config/nvim/lua/autocmds.lua
+-- Carregue o módulo update
+local utils = require('utils')
+
+-- Crie um autocomando para atualizar quando arquivos de configuração forem modificados
 
 
 vim.api.nvim_create_autocmd('User', {
@@ -18,9 +22,3 @@ vim.api.nvim_create_autocmd('User', {
     end)
   end,
 })
-
-
-
-
-
-

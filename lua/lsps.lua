@@ -14,10 +14,10 @@ return {
     tsserver = {
       on_attach = function(client, bufnr)
         -- Desativar formatação automática e linting
-        client.server_capabilities.documentFormattingProvider = false
-        client.server_capabilities.documentRangeFormattingProvider = false
-        client.server_capabilities.codeActionProvider = false
-        client.server_capabilities.hoverProvider = false
+        client.server_capabilities.documentFormattingProvider = true
+        client.server_capabilities.documentRangeFormattingProvider = true
+        client.server_capabilities.codeActionProvider = true
+        client.server_capabilities.hoverProvider = true
       end,
       settings = {
         tsserver = {
@@ -27,7 +27,7 @@ return {
     },
     lua_ls = {},
     emmet_ls = {
-      filetypes = { "html", "css", "javascript", "typescript", "javascriptreact", "typescriptreact" }, -- Adicione ou remova conforme necessário
+      filetypes = { "html", "css", "javascript", "typescript", "javascriptreact", "typescriptreact", "php", "angular", "vue", "svelte" }, -- Adicione ou remova conforme necessário
       init_options = {
         html = {
           options = {

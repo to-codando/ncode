@@ -34,8 +34,8 @@ vim.opt.hlsearch = true   -- Destacar pesquisas
 -- Janelas e Buffers
 vim.opt.splitbelow = true -- Dividir janelas horizontalmente abaixo
 vim.opt.splitright = true -- Dividir janelas verticalmente à direita
-vim.opt.scrolloff = 0     -- Manter 8 linhas visíveis acima e abaixo do cursor
-vim.opt.sidescrolloff = 0 -- Manter 8 colunas visíveis à esquerda e à direita do cursor
+vim.opt.scrolloff = 8     -- Manter 8 linhas visíveis acima e abaixo do cursor
+vim.opt.sidescrolloff = 8 -- Manter 8 colunas visíveis à esquerda e à direita do cursor
 vim.opt.hidden = true     -- Permitir alternar entre buffers sem salvar
 vim.opt.swapfile = true   -- Desativar arquivos de swap
 vim.opt.backup = true     -- Desativar arquivos de backup
@@ -82,11 +82,3 @@ vim.o.timeoutlen = 500
 vim.o.winblend = 10
 vim.o.pumblend = 10
 vim.o.pumheight = 15
-
--- vim.g.ale_typescript_biome_executable = "/home/dev/.nvm/versions/node/v20.12.2/bin/biome"
--- vim.g.ale_javascript_biome_executable = "/home/dev/.nvm/versions/node/v20.12.2/bin/biome"
--- vim.g.ale_disable_lsp = 1
--- vim.g.ale_use_neovim_diagnostics_api = 1
--- vim.g.ale_virtualtext_cursor = "disabled"
--- vim.g.ale_completion_enabled = 0
---

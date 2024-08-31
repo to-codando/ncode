@@ -243,3 +243,34 @@
     (#set! injection.include-children)
     (#set! injection.language "css"))
   (#match? @function_name "css" "keyframes"))
+
+;Injetar html em template literals
+
+(call_expression
+  function: [
+    (await_expression
+      (identifier) @_name
+      (#eq? @_name "html"))
+    ((identifier) @_name
+      (#eq? @_name "html"))
+  ]
+  arguments: ((template_string) @injection.content
+    (#offset! @injection.content 0 1 0 -1)
+    (#set! injection.include-children)
+    (#set! injection.language "tsx")))
+
+
+(call_expression
+  function: [
+    (await_expression
+      (identifier) @injection.language)
+    (identifier) @injection.language
+  ]
+  arguments: [
+    (arguments
+      (template_string) @injection.content)
+    (template_string) @injection.content
+  ]
+  (#lua-match? @injection.language "^css$")
+  (#offset! @injection.content 0 1 0 -1)
+  (#set! injection.include-children))

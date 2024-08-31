@@ -311,12 +311,49 @@ return {
   {
     'nvimdev/lspsaga.nvim',
     dependencies = {
-      'nvim-treesitter/nvim-treesitter',   -- optional
-      'nvim-tree/nvim-web-devicons',       -- optional
+      'nvim-treesitter/nvim-treesitter', -- optional
+      'nvim-tree/nvim-web-devicons',     -- optional
     },
     after = 'nvim-lspconfig',
     config = function()
-      require('lspsaga').setup({})
+      require('lspsaga').setup({
+        ui = {
+          theme = 'round',
+        },
+        lightbulb = {
+          enable = true,
+        },
+        code_action = {
+          enable = true,
+          sign = true,
+          sign_priority = 20,
+          virtual_text = true,
+        },
+        hover = {
+          max_width = 0.6,
+          open_link = 'gx',
+        },
+        rename = {
+          quit = '<ESC>',
+        },
+        symbol_in_winbar = {
+          in_custom = true,
+          enable = true,
+          separator = ' > ',
+          show_file = true,
+          color_mode = true,
+        },
+      })
+
+      -- Mapeamentos customizados
+      vim.api.nvim_set_keymap('n', '<leader>ca', '<cmd>Lspsaga code_action<CR>', { silent = true, noremap = true })
+      vim.api.nvim_set_keymap('n', 'K', '<cmd>Lspsaga hover_doc<CR>', { silent = true, noremap = true })
+      vim.api.nvim_set_keymap('n', 'gd', '<cmd>Lspsaga peek_definition<CR>', { silent = true, noremap = true })
+      vim.api.nvim_set_keymap('n', 'gr', '<cmd>Lspsaga rename<CR>', { silent = true, noremap = true })
+      vim.api.nvim_set_keymap('n', '<leader>bd', '<cmd>Lspsaga show_line_diagnostics<CR>',
+        { silent = true, noremap = true })
+      vim.api.nvim_set_keymap('n', '<leader>cd', '<cmd>Lspsaga show_cursor_diagnostics<CR>',
+        { silent = true, noremap = true })
     end,
   },
   {

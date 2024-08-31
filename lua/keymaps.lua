@@ -1,322 +1,440 @@
-return {
+local cmp = require("cmp")
+local wk = require("which-key")
+local utils = require("utils")
 
-  -- Basic commands
-  ["<leader>k"] = {
-    name = " Common",
-    mode = "n",
+local commander = utils.commander_creator()
 
-    ["k"] = { ':lua require("telescope.builtin").keymaps()<CR>', "Show keymaps" },
-    ["b"] = {
-      function()
-        require("which-key").show()
-      end,
-      "Show which-key panel",
-    },
-    ["w"] = { "<cmd>w<CR>", "Save" },
-    ["q"] = { "<cmd>qa!<CR>", "Quit all buffers" },
-    ["c"] = { "<cmd>lua require('notify').dismiss()<CR>", "Close notification" },
-    ["n"] = { "<cmd>enew<CR>", "Create new buffer" },
-    ["a"] = {
-      function()
-        require("nvim-window").pick()
-      end,
-      "Windows navigation",
-    },
-    ["o"] = {
-      function()
-        require("functions").create_file()
-      end,
-      "Open File Manager",
-    },
+wk.register({
+  ["o"] = { function() require("functions").create_file() end, "Create file" },
+  ["k"] = { ':lua require("telescope.builtin").keymaps()<CR>', "Show keymaps" },
+  ["w"] = { "<cmd>w!<CR>", "Save" },
+  ["q"] = { "<cmd>qa!<CR>", "Close all without save" },
+  ["c"] = { "<cmd>lua require('notify').dismiss()<CR>", "Close notifications" },
+  ["n"] = { "<cmd>enew<CR>", "Create new buffer" },
+  ["a"] = { function() require("nvim-window").pick() end, "Windows navigation" },
+  ["f"] = {
+    function()
+      vim.lsp.buf.format()
+    end,
+    "Format (LSP)",
   },
+}, {
+  mode = "n",             -- Modo normal
+  prefix = "<header>k",   -- Prefixo específico
+  name = "Basic Keymaps", -- Nome do grupo
+})
 
-  -- Window management
-  ["<leader>w"] = {
-    name = "Window",
-    mode = "n",
-    ["s"] = {
-      name = "Split", -- Nome do subgrupo
-      ["v"] = { ":vsp<CR>", "Vertical split" },
-      ["h"] = { ":sp<CR>", "Horizontal split" },
-    },
-    ["r"] = {
-      name = "Resize", -- Nome do subgrupo
-      ["h"] = { ":WinShiftResizeLeft<CR>", "Resize window left" },
-      ["j"] = { ":WinShiftResizeDown<CR>", "Resize window down" },
-      ["k"] = { ":WinShiftResizeUp<CR>", "Resize window up" },
-      ["l"] = { ":WinShiftResizeRight<CR>", "Resize window right" },
-    },
-    ["m"] = {
-      name = "Move", -- Nome do subgrupo
-      ["h"] = { "<cmd>WinShiftLeft<CR>", "Move window left" },
-      ["j"] = { "<cmd>WinShiftDown<CR>", "Move window down" },
-      ["k"] = { "<cmd>WinShiftUp<CR>", "Move window up" },
-      ["l"] = { "<cmd>WinShiftRight<CR>", "Move window right" },
-    },
-    ["n"] = {
-      name = "Navigation",
-      ["a"] = {
-        function()
-          require("nvim-window").pick()
-        end,
-        "Windows navigation",
-      },
-    },
+wk.register({
+  s = {
+    name = "Split Windows",
+    ["v"] = { ":vsp<CR>", "Vertical split" },
+    ["h"] = { ":sp<CR>", "Horizontal split" },
   },
+  r = {
+    name = "Resize Windows",
+    ["h"] = { ":WinShiftResizeLeft<CR>", "Resize window left" },
+    ["j"] = { ":WinShiftResizeDown<CR>", "Resize window down" },
+    ["k"] = { ":WinShiftResizeUp<CR>", "Resize window up" },
+    ["l"] = { ":WinShiftResizeRight<CR>", "Resize window right" },
+  },
+  m = {
+    name = "Move Windows",
+    ["h"] = { "<cmd>WinShiftLeft<CR>", "Move window left" },
+    ["j"] = { "<cmd>WinShiftDown<CR>", "Move window down" },
+    ["k"] = { "<cmd>WinShiftUp<CR>", "Move window up" },
+    ["l"] = { "<cmd>WinShiftRight<CR>", "Move window right" },
+  },
+  ["n"] = { function() require("nvim-window").pick() end, "Windows navigation" },
 
-  -- Buffer management
-  ["<leader>b"] = {
-    name = "Buffers",
-    mode = "n",
-    ["j"] = { "<cmd>BufferLinePick<CR>", "Pick buffer" },
-    ["r"] = { "<cmd>BufferLineCloseRight<CR>", "Close buffers to the right" },
-    ["c"] = { "<cmd>bd!<CR>", "Close current buffer" },
-    ["l"] = { "<cmd>BufferLineCloseLeft<CR>", "Close buffers to the left" },
+}, {
+  mode = "n",               -- Modo normal
+  prefix = "<leader>w",     -- Prefixo específico
+  name = "Windows Manager", -- Nome do grupo
+})
+
+wk.register({
+  c = {
+    name = "Closing Buffers",
+    ["q"] = { "<cmd>bd!<CR>", "Close current buffer" },
     ["o"] = { "<cmd>BufferLineCloseOthers<CR>", "Close other buffers" },
-    ["n"] = { "<cmd>BufferLineCycleNext<CR>", "Next buffer" },
-    ["p"] = { "<cmd>BufferLineCyclePrev<CR>", "Previous buffer" },
-    ["q"] = { "<cmd>BufferLinePickClose<CR>", "Pick and close buffer" },
-    ["1"] = { "<cmd>BufferGoto 1<CR>", "Go to buffer 1" },
-    ["2"] = { "<cmd>BufferGoto 2<CR>", "Go to buffer 2" },
-    ["3"] = { "<cmd>BufferGoto 3<CR>", "Go to buffer 3" },
-    ["4"] = { "<cmd>BufferGoto 4<CR>", "Go to buffer 4" },
-    ["5"] = { "<cmd>BufferGoto 5<CR>", "Go to buffer 5" },
-    ["6"] = { "<cmd>BufferGoto 6<CR>", "Go to buffer 6" },
-    ["7"] = { "<cmd>BufferGoto 7<CR>", "Go to buffer 7" },
-    ["8"] = { "<cmd>BufferGoto 8<CR>", "Go to buffer 8" },
-    ["9"] = { "<cmd>BufferGoto 9<CR>", "Go to buffer 9" },
-    ["0"] = { "<cmd>BufferGoto 10<CR>", "Go to buffer 10" },
+    ["p"] = { "<cmd>BufferLinePickClose<CR>", "Pick and close buffer" },
   },
 
-  -- Search & Replace
-  ["<leader>s"] = {
-    name = "Search & Replace",
-    mode = "n",
-    ["r"] = { "<cmd>%s/<C-r><C-w>//gc<Left><Left>", "replace local ocurrences" },
+  n = {
+    name = "Buffer Navigation",
+    ["p"] = { "<cmd>BufferLinePick<CR>", "Pick buffer and enter" },
+    ["l"] = { "<cmd>BufferLineCycleNext<CR>", "Next buffer" },
+    ["h"] = { "<cmd>BufferLineCyclePrev<CR>", "Previous buffer" },
+  },
+}, {
+  mode = "n",              -- Modo normal
+  prefix = "<leader>b",    -- Prefixo específico
+  name = "Buffer Manager", -- Nome do grupo
+})
+
+-- Certifique-se de ter o which-key instalado e carregado
+
+-- Registra as teclas de atalho
+wk.register({
+    ["r"] = {
+      function()
+        local word = vim.fn.expand("<cword>")                             -- Obtém a palavra sob o cursor
+        local replacement = vim.fn.input("Replace '" .. word .. "' with: ") -- Solicita o novo valor
+        if replacement ~= "" then                                         -- Verifica se o usuário forneceu um valor
+          local cmd = string.format("%%s/%s/%s/gc", vim.fn.escape(word, "/"), vim.fn.escape(replacement, "/"))
+          vim.cmd(cmd)                                                    -- Executa o comando de substituição com confirmação
+        end
+      end,
+      "Replace local occurrences"
+    },
     ["g"] = {
       "<cmd>lua require('telescope.builtin').grep_string({ search = vim.fn.input('Search for > ') })<CR>",
-      "Find global references",
+      "Find global references"
     },
-    ["c"] = { "<cmd>noh<CR>", "Clear highlights" },
-    ["s"] = { "<cmd>/", "Start search" },
-    ["b"] = { "<cmd>?", "Start backward search" },
-    ["n"] = { "<cmd>n<CR>", "Next search result" },
-    ["p"] = { "<cmd>N<CR>", "Previous search result" },
-  },
-
-  -- Nvim-tree
-  ["<leader>e"] = {
-    name = "File Explorer",
-    mode = "n",
-    ["t"] = { "<cmd>NvimTreeToggle<CR>", "Toggle Explorer" },
-    ["r"] = { "<cmd>NvimTreeRename<CR>", "Rename" },
-    ["c"] = { "<cmd>NvimTreeCopy<CR>", "Copy" },
-    ["x"] = { "<cmd>NvimTreeMove<CR>", "Move" },
-    ["a"] = { "<cmd>NvimTreeCreate<CR>", "Create" },
-    ["d"] = { "<cmd>NvimTreeRemove<CR>", "Delete" },
-  },
-
-  --File Manager
-  ["<leader>f"] = {
-    mode = "n",
-    name = "File Manager",
-    ["f"] = {
-      function()
-        require("telescope.builtin").find_files()
-      end,
-      "Find files (Telescope)",
+    ["c"] = {
+      "<cmd>noh<CR>", "Clear highlights"
     },
-    ["g"] = {
+    ["s"] = {
       function()
-        require("telescope.builtin").live_grep()
+        vim.fn.feedkeys("/") -- Simula a tecla `/` para iniciar a pesquisa
       end,
-      "Live grep (Telescope)",
+      "Start search"
     },
     ["b"] = {
       function()
-        require("telescope.builtin").buffers()
+        vim.fn.feedkeys("?") -- Simula a tecla `?` para iniciar a pesquisa para trás
       end,
-      "List buffers (Telescope)",
+      "Start backward search"
+    },
+    ["n"] = {
+      "n", "Next search result"
+    }, -- Navega para o próximo resultado da pesquisa
+    ["p"] = {
+      "N", "Previous search result"
+    }, -- Navega para o resultado anterior da pesquisa
+  },
+  {
+    mode = "n",              -- Modo normal
+    prefix = "<leader>s",    -- Prefixo específico
+    name = "Search & Replace", -- Nome do grupo
+  })
+
+
+wk.register({
+  ["t"] = { "<cmd>NvimTreeToggle<CR>", "Toggle explorer" },
+}, {
+  mode = "n",              -- Modo normal
+  prefix = "<leader>e",    -- Prefixo específico
+  name = "Files Explorer", -- Nome do grupo
+})
+
+wk.register({
+  ["f"] = { function() require("telescope.builtin").find_files() end, "Find files" },
+  ["g"] = { function() require("telescope.builtin").live_grep() end, "Live grep" },
+  ["b"] = { function() require("telescope.builtin").buffers() end, "Display open buffers" },
+  ["h"] = { function() require("telescope.builtin").help_tags() end, "Help tags" },
+
+  ["c"] = { function() require("functions").create_file() end, "Create files" },
+}, {
+  mode = "n",             -- Modo normal
+  prefix = "<leader>f",   -- Prefixo específico
+  name = "Files Manager", -- Nome do grupo
+})
+
+wk.register({
+  ["x"] = { "<cmd>Trouble diagnostics toggle<CR>", "Toggle diagnostics" },
+  ["t"] = { "<cmd>lua require'dap'.toggle_breakpoint()<CR>", "Toggle breakpoint" },
+  ["r"] = { "<cmd>lua require'dap'.repl.open()<CR>", "Open REPL" },
+  ["l"] = { "<cmd>lua require'dap'.run_last()<CR>", "Run last" },
+  ["b"] = {
+    "<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
+    "Set conditional breakpoint",
+  },
+  ["p"] = { "<cmd>lua require'dap'.pause()<CR>", "Pause debugging" },
+  ["f"] = { "<cmd>lua require'dap'.terminate()<CR>", "Finish debugging" },
+  ["<F5>"] = { "<cmd>lua require('dap_ui').select_dap_config()<CR>", "Start debugging" },
+  ["<F10>"] = { "<cmd>lua require'dap'.step_over()<CR>", "Step over" },
+  ["<F11>"] = { "<cmd>lua require'dap'.step_into()<CR>", "Step into" },
+  ["<F12>"] = { "<cmd>lua require'dap'.step_out()<CR>", "Step out" },
+}, {
+  mode = "n",           -- Modo normal
+  prefix = "<leader>d", -- Prefixo específico
+  name = "Debugger",    -- Nome do grupo
+})
+
+wk.register({
+  ["h"] = { "<Cmd>Lspsaga hover_doc<CR>", "Hover documentation" },
+  ["p"] = { "<Cmd>Lspsaga preview_definition<CR>", "Preview definition" },
+  ["a"] = { "<Cmd>Lspsaga code_action<CR>", "Code action" },
+  ["r"] = { "<Cmd>Lspsaga rename<CR>", "Rename" },
+  ["f"] = { "<Cmd>Lspsaga lsp_finder<CR>", "Find LSP references" },
+  ["e"] = { "<Cmd>Lspsaga show_line_diagnostics<CR>", "Show line diagnostics" },
+  ["j"] = { "<Cmd>Lspsaga diagnostic_jump_next<CR>", "Jump to next diagnostic" },
+  ["k"] = { "<Cmd>Lspsaga diagnostic_jump_prev<CR>", "Jump to previous diagnostic" },
+  ["d"] = { "<Cmd>Lspsaga goto_definition<CR>", "Go to definition" },
+  ["o"] = { "<Cmd>Lspsaga outline<CR>", "Show outline" },
+  ["l"] = {
+    "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>",
+    "Toggle line comment",
+  },
+  ["b"] = {
+    "<cmd>lua require('Comment.api').toggle.blockwise()<CR>",
+    "Toggle block comment",
+  },
+  ["i"] = {
+    function()
+      vim.lsp.buf.implementation()
+    end,
+    "Go to implementation (LSP)",
+  },
+}, {
+  mode = "n",               -- Modo normal
+  prefix = "<leader>c",     -- Prefixo específico
+  name = "Code Operations", -- Nome do grupo
+})
+
+wk.register({
+  ["l"] = {
+    "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>",
+    "Toggle line comment",
+  },
+  ["b"] = {
+    "<cmd>lua require('Comment.api').toggle.blockwise()<CR>",
+    "Toggle block comment",
+  },
+  ["f"] = {
+    function()
+      vim.lsp.buf.format()
+    end,
+    "Format (LSP)",
+  },
+}, {
+  mode = "v",               -- Modo normal
+  prefix = "<leader>c",     -- Prefixo específico
+  name = "Code Operations", -- Nome do grupo
+})
+
+wk.register({
+  ["<C-k>"] = { cmp.mapping.scroll_docs(-4), "Scroll docs up" },
+  ["<C-j>"] = { cmp.mapping.scroll_docs(4), "Scroll docs down" },
+  ["<C-Space>"] = { cmp.mapping.complete(), "Trigger completion" },
+  ["<C-e>"] = { cmp.mapping.abort(), "Abort completion" },
+  ["<C-y>"] = { cmp.mapping.confirm({ select = true }), "Confirm completion" },
+  ["<C-n>"] = {
+    function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end,
+    "Select next item or expand/jump snippet",
+  },
+  ["<C-p>"] = {
+    function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end,
+    "Select previous item or jump back in snippet",
+  },
+}, {
+  mode = { "i", "s" },   -- Modos inserção e substituição
+  prefix = "<leader>a",  -- Prefixo específico
+  name = "Autocomplete", -- Nome do grupo
+})
+
+
+wk.register({
+  -- Mapeamentos padrão do plugin easycolor.nvim
+  p = {
+    "<cmd>EasyColor<cr>",
+    "Color Picker",                                                       -- Atalho para abrir o seletor de cores
+  },
+  q = { "<cmd>EasyColorClose<cr>", "Close Picker" },                      -- Fechar o seletor de cores
+  j = { "<cmd>EasyColorMoveCursorDown<cr>", "Move Cursor Down" },         -- Mover cursor para baixo
+  k = { "<cmd>EasyColorMoveCursorUp<cr>", "Move Cursor Up" },             -- Mover cursor para cima
+  h = { "<cmd>EasyColorMoveCursorLeft<cr>", "Move Cursor Left" },         -- Mover cursor para a esquerda
+  l = { "<cmd>EasyColorMoveCursorRight<cr>", "Move Cursor Right" },       -- Mover cursor para a direita
+  ["<Down>"] = { "<cmd>EasyColorHueDown<cr>", "Hue Down" },               -- Diminuir a tonalidade
+  ["<Up>"] = { "<cmd>EasyColorHueUp<cr>", "Hue Up" },                     -- Aumentar a tonalidade
+  ["<Enter>"] = { "<cmd>EasyColorInsert<cr>", "Insert Color" },           -- Inserir a cor selecionada
+  t = { "<cmd>EasyColorEditFormatting<cr>", "Edit Formatting Template" }, -- Editar o modelo de formatação
+}, {
+  mode = "n",
+  prefix = "<leader>p",
+  name = "ColorPicker",
+})
+
+-- Git normal mode
+
+wk.register({
+  -- Git Hunks
+  h = {
+    name = "Git Hunks",
+    s = { "<cmd>Gitsigns stage_hunk<CR>", "Stage Hunk" },
+    u = { "<cmd>Gitsigns undo_stage_hunk<CR>", "Undo Stage" },
+    r = { "<cmd>Gitsigns reset_hunk<CR>", "Reset Hunk" },
+    p = { "<cmd>Gitsigns preview_hunk<CR>", "Preview Hunk" },
+    d = { "<cmd>Gitsigns diffthis<CR>", "Diff This" },
+    j = { "<cmd>Gitsigns next_hunk<CR>", "Next Hunk" },
+    k = { "<cmd>Gitsigns prev_hunk<CR>", "Previous Hunk" },
+  },
+  -- Git Blame
+  b = {
+    name = "Git Blame",
+    b = { "<cmd>GitBlameToggle<CR>", "Toggle Blame" },
+    o = { "<cmd>GitBlameOpenCommitURL<CR>", "Open Commit URL" },
+  },
+  -- Git Diff
+  d = {
+    name = "Git Diff",
+    l = { "<cmd>DiffviewSelectNextEntry<CR>", "Next Diff Entry" },
+    h = { "<cmd>DiffviewSelectPrevEntry<CR>", "Previous Diff Entry" },
+    j = { "<cmd>DiffviewNextEntry<CR>", "Next File Panel Entry" },
+    k = { "<cmd>DiffviewPrevEntry<CR>", "Previous File Panel Entry" },
+    q = { "<cmd>DiffviewClose<CR>", "Close Diffview" },
+    o = { "<cmd>DiffviewOpen<CR>", "Open Diffview" },
+  },
+  -- Git All
+  a = {
+    name = "Git All",
+    n = { "<cmd>Neogit<CR>", "Open Neogit" },
+    c = { "<cmd>Neogit commit<CR>", "Open Commit Popup" },
+    b = { "<cmd>Neogit branch<CR>", "Open Branch Popup" },
+    p = { "<cmd>Neogit push<CR>", "Push Changes" },
+    f = { "<cmd>Neogit fetch<CR>", "Fetch Changes" },
+    m = { "<cmd>Neogit merge<CR>", "Open Merge Popup" },
+    r = { "<cmd>Neogit rebase<CR>", "Open Rebase Popup" },
+    l = { "<cmd>Neogit log<CR>", "Open Log Popup" },
+    t = { "<cmd>Neogit tag<CR>", "Open Tag Popup" },
+  },
+}, {
+  mode = "n",
+  prefix = "<leader>g",
+  name = "Git Tools",
+})
+
+--  Git  visual mode
+wk.register({
+  -- Git Hunks (Visual Mode)
+  h = {
+    name = "Git Hunks",
+    s = { "<cmd>Gitsigns stage_hunk<CR>", "Stage Hunk" },
+    u = { "<cmd>Gitsigns undo_stage_hunk<CR>", "Undo Stage" },
+    r = { "<cmd>Gitsigns reset_hunk<CR>", "Reset Hunk" },
+    p = { "<cmd>Gitsigns preview_hunk<CR>", "Preview Hunk" },
+  },
+  -- Git Diff (Visual Mode)
+  d = {
+    name = "Git Diff",
+    o = { "<cmd>DiffviewOpen<CR>", "Open Diffview" },
+    q = { "<cmd>DiffviewClose<CR>", "Close Diffview" },
+  },
+}, {
+  mode = "v",
+  prefix = "<leader>g",
+  name = "Git Tools",
+})
+
+wk.register({
+  mode = { "v", "n" },
+  name = "Plugins Manager",
+  p = { function() utils.uninstall_plugins() end, "Uninstall plugins" },
+}, { prefix = "<leader>u" })
+
+wk.register({
+  m = {
+    name = "Move text",
+    ["j"] = { function() commander.register("<Plug>GoNMLineDown") end, "Move Line Down" },
+    ["k"] = { function() commander.register("<Plug>GoNMLineUp") end, "Move Line Up" },
+    ["h"] = { function() commander.register("<Plug>GoNMLineLeft") end, "Move Line Left" },
+    ["l"] = { function() commander.register("<Plug>GoNMLineRight") end, "Move Line Right" },
+  },
+  d = {
+    name = "Duplicate text",
+    ["j"] = { function() commander.register("<Plug>GoNDLineDown") end, "Duplicate Line Down" },
+    ["k"] = { function() commander.register("<Plug>GoNDLineUp") end, "Duplicate Line Up" },
+  }
+}, { mode = "n", prefix = "<leader>t", name = "Text Motions" })
+
+wk.register({
+  m = {
+    name = "Move text",
+    ["j"] = { function() commander.register("<Plug>GoVLineDown") end, "Move Selected Lines Down" },
+    ["k"] = { function() commander.register("<Plug>GoVLineUp") end, "Move Selected Lines Up" },
+    ["h"] = { function() commander.register("<Plug>GoVLineLeft") end, "Move Selected Lines Left" },
+    ["l"] = { function() commander.register("<Plug>GoVLineRight") end, "Move Selected Lines Right" },
+  },
+  d = {
+    name = "Duplicate text",
+    ["j"] = { function() commander.register("<Plug>GoVDLineDown") end, "Duplicate Selected Lines Down" },
+    ["k"] = { function() commander.register("<Plug>GoVDLineUp") end, "Duplicate Selected Lines Up" },
+  }
+}, { mode = "v", prefix = "<leader>t", name = "Text Motions" })
+
+-- Mapeia a tecla para repetir o último comando
+wk.register({
+  function() commander.repeat_last() end, "Repeat Last Motion"
+}, { mode = "n", prefix = "<leader>r", name = "Repeat Text Motion" })
+
+-- Registra os keymaps para o vim-visual-multi
+wk.register({
+  m = {
+    name = "Multi Cursor",
+    ["l"] = {
+      function()
+        commander.register("<Plug>(VM-Find-Under)")
+      end,
+      "Add Cursor to Next Occurrence"
     },
     ["h"] = {
       function()
-        require("telescope.builtin").help_tags()
+        commander.register("<Plug>(VM-Find-Subword-Under)")
       end,
-      "Help tags (Telescope)",
+      "Add Cursor to Previous Occurrence"
     },
-
-    -- Oil File Browser
-    ["o"] = {
+    ["k"] = {
       function()
-        require("functions").create_file()
+        commander.register("<Plug>(VM-Add-Cursor-Up)")
       end,
-      "Open File Manager",
+      "Add Cursor Up"
     },
-  },
-
-  -- Harpoon
-  ["<leader>h"] = {
-    name = "File Navigation",
-    mode = "n",
-    ["a"] = {
+    ["j"] = {
       function()
-        require("harpoon").mark.add_file()
+        commander.register("<Plug>(VM-Add-Cursor-Down)")
       end,
-      "Add file to Harpoon",
+      "Add Cursor Down"
     },
-    ["t"] = {
+    ["x"] = {
       function()
-        require("harpoon").ui.toggle_quick_menu()
+        commander.register("<Plug>(VM-Remove-Cursor)")
       end,
-      "Toggle Harpoon quick menu",
-    },
-    ["1"] = {
-      function()
-        require("harpoon").ui.nav_file(1)
-      end,
-      "Navigate to file 1 in Harpoon",
-    },
-    ["2"] = {
-      function()
-        require("harpoon").ui.nav_file(2)
-      end,
-      "Navigate to file 2 in Harpoon",
-    },
-    ["3"] = {
-      function()
-        require("harpoon").ui.nav_file(3)
-      end,
-      "Navigate to file 3 in Harpoon",
-    },
-    ["4"] = {
-      function()
-        require("harpoon").ui.nav_file(4)
-      end,
-      "Navigate to file 4 in Harpoon",
-    },
-    ["p"] = {
-      function()
-        require("harpoon").ui.nav_prev()
-      end,
-      "Navigate to previous file in Harpoon",
+      "Remove Current Cursor"
     },
     ["n"] = {
       function()
-        require("harpoon").ui.nav_next()
+        commander.register("<Plug>(VM-Find-Next)")
       end,
-      "Navigate to next file in Harpoon",
+      "Find Next Occurrence"
     },
-  },
-
-  -- Comments
-  ["<leader>c"] = {
-    name = "Comments",
-    mode = { "n", "v" },
-    ["l"] = {
-      "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>",
-      "Toggle line comment",
-    },
-    ["b"] = {
-      "<cmd>lua require('Comment.api').toggle.blockwise()<CR>",
-      "Toggle block comment",
-    },
-  },
-
-  -- LSP
-  ["<leader>n"] = {
-    name = "Code Navigation",
-    mode = "n",
-    ["d"] = {
+    ["p"] = {
       function()
-        vim.lsp.buf.definition()
+        commander.register("<Plug>(VM-Find-Prev)")
       end,
-      "Go to definition (LSP)",
+      "Find Previous Occurrence"
     },
-    ["r"] = {
+    ["y"] = {
       function()
-        vim.lsp.buf.references()
+        commander.register("<Plug>(VM-Select-All)")
       end,
-      "References (LSP)",
-    },
-    ["i"] = {
-      function()
-        vim.lsp.buf.implementation()
-      end,
-      "Go to implementation (LSP)",
-    },
-    ["rn"] = {
-      function()
-        vim.lsp.buf.rename()
-      end,
-      "Rename (LSP)",
-    },
-    ["ca"] = {
-      function()
-        vim.lsp.buf.code_action()
-      end,
-      "Code action (LSP)",
-    },
-    ["f"] = {
-      function()
-        vim.lsp.buf.format()
-      end,
-      "Format (LSP)",
-    },
-    ["ce"] = {
-      function()
-        vim.diagnostic.open_float()
-      end,
-      "Open floating error",
-    },
-    ["[d"] = {
-      function()
-        vim.diagnostic.goto_prev()
-      end,
-      "Go to previous error",
-    },
-    ["]d"] = {
-      function()
-        vim.diagnostic.goto_next()
-      end,
-      "Go to next error",
-    },
-  },
-
-  ["<leader>d"] = {
-    name = "Debugger",
-    mode = "n",
-    ["x"] = { "<cmd>Trouble diagnostics toggle<CR>", "Toggle diagnostics" },
-    ["t"] = { "<cmd>lua require'dap'.toggle_breakpoint()<CR>", "Toggle breakpoint" },
-    ["r"] = { "<cmd>lua require'dap'.repl.open()<CR>", "Open REPL" },
-    ["l"] = { "<cmd>lua require'dap'.run_last()<CR>", "Run last" },
-    ["b"] = {
-      "<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
-      "Set conditional breakpoint",
-    },
-    ["p"] = { "<cmd>lua require'dap'.pause()<CR>", "Pause debugging" },
-    ["f"] = { "<cmd>lua require'dap'.terminate()<CR>", "Finish debugging" },
-
-    ["<F5>"] = { "<cmd>lua require('dap_ui').select_dap_config()<CR>", "Start debugging" },
-    ["<F10>"] = { "<cmd>lua require'dap'.step_over()<CR>", "Step over" },
-    ["<F11>"] = { "<cmd>lua require'dap'.step_into()<CR>", "Step into" },
-    ["<F12>"] = { "<cmd>lua require'dap'.step_out()<CR>", "Step out" },
-  },
-
-  -- LSP Saga
-  ["<leader>l"] = {
-    name = "LSP Saga",
-    mode = "n",
-    ["h"] = { "<Cmd>Lspsaga hover_doc<CR>", "Hover documentation" },
-    ["d"] = { "<Cmd>Lspsaga preview_definition<CR>", "Preview definition" },
-    ["a"] = { "<Cmd>Lspsaga code_action<CR>", "Code action" },
-    ["r"] = { "<Cmd>Lspsaga rename<CR>", "Rename" },
-    ["f"] = { "<Cmd>Lspsaga lsp_finder<CR>", "Find LSP references" },
-    ["e"] = { "<Cmd>Lspsaga show_line_diagnostics<CR>", "Show line diagnostics" },
-    ["s"] = { "<Cmd>Lspsaga diagnostic_jump_next<CR>", "Jump to next diagnostic" },
-    ["S"] = { "<Cmd>Lspsaga diagnostic_jump_prev<CR>", "Jump to previous diagnostic" },
-    ["c"] = { "<Cmd>Lspsaga goto_definition<CR>", "Go to definition" },
-    ["o"] = { "<Cmd>Lspsaga outline<CR>", "Show outline" },
-  },
-
-  ["<C-y>,"] = { "<Plug>(emmet-expand-abbr)", "Emmet Expand", mode = "i" },
-}
+      "Select All Lines"
+    }
+  }
+}, { mode = "n", prefix = "<leader>", name = "Multi Cursor" })

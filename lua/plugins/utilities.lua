@@ -1,72 +1,34 @@
 -- ~/.config/nvim/lua/plugins/utilities.lua
 return {
   {
-    'NvChad/nvim-colorizer.lua'
-  },
-  {
-    "max397574/colortils.nvim",
-    cmd = "Colortils",
+    "gpanders/editorconfig.nvim",
+    event = "BufReadPre",
     config = function()
-      require("colortils").setup()
+      vim.g.editorconfig = true
     end,
   },
   {
-    "cshuaimin/ssr.nvim",
-    module = "ssr",
-    -- Calling setup is optional.
+    "norcalli/nvim-colorizer.lua",
+    event = "BufRead",
     config = function()
-      require("ssr").setup {
-        border = "rounded",
-        min_width = 50,
-        min_height = 5,
-        max_width = 120,
-        max_height = 25,
-        adjust_window = true,
-        keymaps = {
-          close = "q",
-          next_match = "n",
-          prev_match = "N",
-          replace_confirm = "<cr>",
-          replace_all = "<leader><cr>",
-        },
-      }
-    end
-  },
-  {
-    "doctorfree/cheatsheet.nvim",
-    event = "VeryLazy",
-    dependencies = {
-      { "nvim-telescope/telescope.nvim" },
-      { "nvim-lua/popup.nvim" },
-      { "nvim-lua/plenary.nvim" },
-    },
-    config = function()
-      local ctactions = require("cheatsheet.telescope.actions")
-      require("cheatsheet").setup({
-        bundled_cheetsheets = {
-          enabled = { "default", "lua", "markdown", "regex", "netrw", "unicode" },
-          disabled = { "nerd-fonts" },
-        },
-        bundled_plugin_cheatsheets = {
-          enabled = {
-            "auto-session",
-            "goto-preview",
-            "octo.nvim",
-            "telescope.nvim",
-            "vim-easy-align",
-            "vim-sandwich",
-          },
-          disabled = { "gitsigns" },
-        },
-        include_only_installed_plugins = true,
-        telescope_mappings = {
-          ["<CR>"] = ctactions.select_or_fill_commandline,
-          ["<A-CR>"] = ctactions.select_or_execute,
-          ["<C-Y>"] = ctactions.copy_cheat_value,
-          ["<C-E>"] = ctactions.edit_user_cheatsheet,
-        },
+      require('colorizer').setup({
+        '*',             -- Highlight all files
+      }, {
+        RGB = true,      -- #RGB hex codes
+        RRGGBB = true,   -- #RRGGBB hex codes
+        names = true,    -- "Name" codes like "red" or "blue"
+        RRGGBBAA = true, -- #RRGGBBAA hex codes
+        css = true,      -- Enable all CSS features
+        css_fn = true,   -- Enable all CSS features
       })
     end,
+  },
+  {
+    "neph-iap/easycolor.nvim",
+    dependencies = { "stevearc/dressing.nvim" }, -- Dependência opcional
+    event = "VeryLazy",
+    opts = {},
+    keys = { { "<leader>b", "<cmd>EasyColor<cr>", desc = "Color Picker" } }
   },
   {
     "folke/which-key.nvim",
@@ -74,12 +36,11 @@ return {
     config = function()
       -- Carregue o plugin
       local wk = require("which-key")
-      local maps = require('keymaps')
 
       -- Configure o which-key
       wk.setup({
         -- Escolha o layout (opções: "classic", "modern", "helix")
-        preset = "classic",
+        preset = "modern",
         -- Tempo de delay antes de mostrar o popup
         delay = 200,
 
@@ -174,7 +135,6 @@ return {
         debug = false,
         notify = false,
       })
-      wk.register(maps, { prefix = "" })
     end
   }
 }

@@ -15,6 +15,14 @@ return {
     end
   },
   {
+    'echasnovski/mini.nvim',
+    'ryanoasis/vim-devicons',
+    'nvim-tree/nvim-web-devicons',
+    config = function()
+      require('nvim-web-devicons').setup { default = true, }
+    end
+  },
+  {
     "rcarriga/nvim-notify",
     --  enabled = false,
     config = function()
@@ -29,15 +37,6 @@ return {
 
       -- Suprime os warnings
       vim.notify = function(msg, level, opts)
-        if level == "INFO" then
-          return -- Não exibe warnings
-        end
-        if level == "WARN" then
-          return -- Não exibe warnings
-        end
-        if msg:match("ALE") then
-          return
-        end
         notify(msg, level, opts)
       end
     end,

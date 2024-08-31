@@ -1,93 +1,57 @@
 return {
   {
+    "kyazdani42/nvim-tree.lua",
+    config = function()
+      local nvimtree = require("nvim-tree")
+      nvimtree.setup({
+        view = {
+          width = 30, -- Define a largura da árvore de arquivos
+          side = "left",
+        },
+        renderer = {
+          group_empty = true,
+          highlight_opened_files = "all",
+          root_folder_label = false,
+          icons = {
+            show = {
+              file = true,
+              folder = true,
+              folder_arrow = true,
+              git = false,
+            },
+          },
+        },
+        filters = {
+          custom = { "node_modules", ".cache", "dist", "*.tmp", "*.swp", "*.bak" }, -- Adicione aqui os padrões de arquivos e diretórios a serem ocultados
+        },
+
+      })
+    end
+  },
+  {
     "ThePrimeagen/harpoon",
     branch = "harpoon2",
     dependencies = { "nvim-lua/plenary.nvim" }
   },
+
   {
     'nvim-telescope/telescope.nvim',
-    dependencies = {'nvim-lua/plenary.nvim'},
+    dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()
       local telescope = require('telescope')
       telescope.setup({
         defaults = {
-          file_ignore_patterns = {},  -- Certifique-se de que essa configuração esteja vazia se você não quiser ignorar nenhum arquivo
-          hidden = true,  -- Habilita a exibição de arquivos ocultos
+          file_ignore_patterns = {
+            ".git", "node_modules", ".cache", "dist"
+          },
+          hidden = true,
         },
         pickers = {
           find_files = {
-            hidden = true,  -- Inclui arquivos ocultos na pesquisa de arquivos
+            hidden = true,
           },
         },
       })
     end
   },
-  {
-    'nvim-tree/nvim-tree.lua',
-    dependencies = {
-      'nvim-tree/nvim-web-devicons',
-      'nvim-telescope/telescope.nvim',
-    },
-    config = function()
-      require('nvim-tree').setup({
-        renderer = {
-          icons = {
-            glyphs = {
-              default = "",
-              symlink = "",
-              git = {
-                unstaged = "⏺",
-                staged = "",
-                unmerged = "",
-                renamed = "󰷉",
-                deleted = "",
-                untracked = "",
-                ignored = "",
-              },
-              folder = {
-                default = "",
-                open = "",
-                empty = "",
-                empty_open = "",
-                symlink = "",
-              },
-            },
-          },
-        },
-        view = {
-          float = {
-            enable = false,
-            open_win_config = {
-              relative = 'editor',
-              border = 'rounded',
-            },
-          },
-          width = 30,
-          side = 'left',
-        },
-        disable_netrw = true,
-        hijack_netrw = true,
-        hijack_cursor = false,
-        update_cwd = false,
-        diagnostics = {
-          enable = false,
-        },
-        update_focused_file = {
-          enable = false,
-          update_cwd = false,
-          ignore_list = {}
-        },
-        system_open = {
-          cmd = nil,
-          args = {}
-        },
-        filters = {
-          dotfiles = false,
-          custom = {},
-          exclude = {},
-        },
-      })
-    end
-  }
 }
-
