@@ -19,7 +19,7 @@ return {
           theme = 'catppuccin', -- ou o tema que você estiver usando
           component_separators = { left = '‹', right = '›' }, -- Usando setas Unicode
           section_separators = { left = '', right = '' }, -- Usando setas Unicode
-          disabled_filetypes = {},
+          disabled_filetypes = { "toggleterm" },
           always_divide_middle = true,
         },
         sections = {

@@ -13,7 +13,6 @@ utils.merge_tables(lsps_config, user_settings.lsps or {})
 local diagnostics_config = vim.deepcopy(default_diagnostics)
 utils.merge_tables(diagnostics_config, user_settings.diagnostics or {})
 
--- Função para aplicar configurações aos servidores LSP
 local function apply_config(server, opts)
   local lspconfig = require("lspconfig")
   local server_opts = lsps_config.settings and lsps_config.settings[server] or {}
@@ -21,6 +20,19 @@ local function apply_config(server, opts)
   -- Mescla configurações existentes com as novas opções
   local merged_opts = vim.deepcopy(server_opts)
   utils.merge_tables(merged_opts, opts or {})
+
+  -- Adiciona verificação para suporte a documentSymbols
+  merged_opts.on_attach = function(client, bufnr)
+    -- Verifica se o servidor suporta documentSymbols antes de anexar nvim-navbuddy
+    if client.server_capabilities.documentSymbolProvider then
+      require("nvim-navbuddy").attach(client, bufnr)
+    end
+
+    -- Chama o on_attach original, se houver
+    if server_opts.on_attach then
+      server_opts.on_attach(client, bufnr)
+    end
+  end
 
   -- Configura o servidor LSP com todas as opções disponíveis
   lspconfig[server].setup(merged_opts)
@@ -307,6 +319,47 @@ return {
       })
     end,
   },
+  {
+    "SmiteshP/nvim-navbuddy",
+    dependencies = {
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
+
+      "SmiteshP/nvim-navic",
+      "MunifTanjim/nui.nvim"
+    },
+    opts = { lsp = { auto_attach = true } },
+    config = function()
+      require('nvim-navbuddy').setup({
+        -- Configurações específicas do Navbuddy
+        lsp = {
+          auto_attach = true, -- anexa automaticamente aos servidores LSP
+        },
+        treesitter = {
+          auto_attach = true, -- anexa automaticamente ao Treesitter
+        },
+        keymaps = {
+          ['<leader>n'] = '<cmd>Navbuddy<cr>', -- mapeia a tecla para abrir o Navbuddy
+        },
+        window = {
+          -- Definindo a largura de cada coluna individualmente
+          sections = {
+            left = {
+              size = "20%", -- Coluna de símbolos (esquerda)
+            },
+            mid = {
+              size = "20%", -- Coluna intermediária
+            },
+            right = {
+              size = "60%", -- Coluna de preview (direita)
+            },
+          },
+        },
+      })
+    end,
+
+  },
+
 
   {
     'nvimdev/lspsaga.nvim',

@@ -3,17 +3,27 @@ return {
   -- Git-blame.nvim
   {
     "f-person/git-blame.nvim",
-    config = function()
-      vim.g.gitblame_enabled = 1
-      vim.g.gitblame_date_format = "%Y-%m-%d"
-      vim.g.gitblame_message_template = "<author> • <date> • <summary>"
-    end,
-    lazy = true, -- Carregar sob demanda
+    -- load the plugin at startup
+    event = "VeryLazy",
+    -- Because of the keys part, you will be lazy loading this plugin.
+    -- The plugin wil only load once one of the keys is used.
+    -- If you want to load the plugin at startup, add something like event = "VeryLazy",
+    -- or lazy = false. One of both options will work.
+    opts = {
+      -- your configuration comes here
+      -- for example
+      enabled = true, -- if you want to enable the plugin
+      message_template = " <summary> • <date> • <author> • <<sha>>", -- template for the blame message, check the Message template section for more options
+      date_format = "%m-%d-%Y %H:%M:%S", -- template for the date, check Date format section for more options
+      virtual_text_column = 1, -- virtual text start column, check Start virtual text at column section for more options
+    },
+
   },
 
   -- Gitsigns.nvim
   {
     "lewis6991/gitsigns.nvim",
+    event = "VeryLazy",
     config = function()
       require("gitsigns").setup({
         signs = {
@@ -31,12 +41,12 @@ return {
         },
       })
     end,
-    lazy = true, -- Carregar sob demanda
   },
 
   -- Neogit
   {
     "NeogitOrg/neogit",
+    event = "VeryLazy",
     dependencies = {
       "nvim-lua/plenary.nvim",         -- necessário
       "sindrets/diffview.nvim",        -- integração opcional com Diffview
@@ -58,19 +68,19 @@ return {
         }
       })
     end,
-    lazy = true, -- Carregar sob demanda
   },
 
   -- Diffview.nvim
   {
     "sindrets/diffview.nvim",
+    event = "VeryLazy",
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
       require('diffview').setup({
         enhanced_diff_hl = true,
         use_icons = true,
         file_panel = {
-          width = 35,
+          listing_style = "tree", -- ou "list" se preferir uma lista
         },
         keymaps = {
           view = {
@@ -86,7 +96,5 @@ return {
         },
       })
     end,
-    lazy = true, -- Carregar sob demanda
   },
 }
-

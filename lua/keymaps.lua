@@ -3,6 +3,7 @@ local wk = require("which-key")
 local utils = require("utils")
 
 local commander = utils.commander_creator()
+local terminal = utils.create_terminal()
 -- Armazene a instância no global para fácil acesso
 _G.commander = commander
 
@@ -440,3 +441,101 @@ wk.register({
     }
   }
 }, { mode = "n", prefix = "<leader>", name = "Multi Cursor" })
+
+-- Symbols Navigators
+
+wk.register({
+  o = {
+    name = "Symbols (Sidebar)",
+    ["t"] = { "<cmd>Outline<cr>", "Toggle Outline" },
+  }
+}, { mode = "n", prefix = "<leader>" })
+
+local actions = require("nvim-navbuddy.actions")
+
+wk.register({
+  n = {
+    name = "Symbols (Popup)",
+
+    ["t"] = { "<cmd>lua require('nvim-navbuddy').open()<CR>", "Open Navbuddy" },
+
+    ["<esc>"] = { actions.close, "Close Navbuddy" },
+    ["q"] = { actions.close, "Close Navbuddy" },
+
+    ["j"] = { actions.next_sibling, "Next Sibling" },
+    ["k"] = { actions.previous_sibling, "Previous Sibling" },
+
+    ["h"] = { actions.parent, "Parent" },
+    ["l"] = { actions.children, "Children" },
+    ["0"] = { actions.root, "Root" },
+
+    ["v"] = { actions.visual_name, "Visual Selection of Name" },
+    ["V"] = { actions.visual_scope, "Visual Selection of Scope" },
+
+    ["y"] = { actions.yank_name, "Yank Name" },
+    ["Y"] = { actions.yank_scope, "Yank Scope" },
+
+    ["i"] = { actions.insert_name, "Insert at Start of Name" },
+    ["I"] = { actions.insert_scope, "Insert at Start of Scope" },
+
+    ["a"] = { actions.append_name, "Append to End of Name" },
+    ["A"] = { actions.append_scope, "Append to End of Scope" },
+
+    ["r"] = { actions.rename, "Rename" },
+
+    ["d"] = { actions.delete, "Delete" },
+
+    ["f"] = { actions.fold_create, "Create Fold" },
+    ["F"] = { actions.fold_delete, "Delete Fold" },
+
+    ["c"] = { actions.comment, "Comment Out" },
+
+    ["<enter>"] = { actions.select, "Select" },
+    ["o"] = { actions.select, "Select" },
+
+    ["J"] = { actions.move_down, "Move Down" },
+    ["K"] = { actions.move_up, "Move Up" },
+
+    ["s"] = { actions.toggle_preview, "Toggle Preview" },
+
+    ["<C-v>"] = { actions.vsplit, "Vertical Split" },
+    ["<C-s>"] = { actions.hsplit, "Horizontal Split" },
+
+    ["p"] = {
+      function()
+        actions.telescope({
+          layout_config = {
+            height = 0.60,
+            width = 0.60,
+            prompt_position = "top",
+            preview_width = 0.50,
+          },
+          layout_strategy = "vertical",
+        })
+      end,
+      "Telescope",
+    },
+
+    ["g?"] = { actions.help, "Help" },
+  },
+}, {
+  mode = "n",          -- Normal mode
+  prefix = "<leader>", -- Prefix
+  name = "",           -- Group name
+})
+
+local mappings = {
+  z = {
+    name = "Terminal",
+    f = { function() terminal.create_floating_terminal() end, "Floating Terminal" },
+    v = { function() terminal.create_vertical_terminal() end, "Vertical Terminal" },
+    h = { function() terminal.create_horizontal_terminal() end, "Horizontal Terminal" },
+    t = { function() terminal.create_tab_terminal() end, "Tab Terminal" },
+    n = { function() terminal.switch_next_terminal() end, "Next Terminal" },
+    p = { function() terminal.switch_previous_terminal() end, "Previous Terminal" },
+    H = { function() terminal.hide_all_terminals() end, "Hide All Terminals" },
+    S = { function() terminal.show_all_terminals() end, "Show All Terminals" },
+  }
+}
+
+require('which-key').register(mappings, { prefix = "<leader>" })

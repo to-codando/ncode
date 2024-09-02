@@ -223,6 +223,158 @@ local function commander_creator()
   }
 end
 
+local function create_terminal()
+  local Terminal = require('toggleterm.terminal').Terminal
+
+  -- Contador global para nomes de terminais
+  local terminal_counter = 1
+
+  local terminals = {}
+  local active_index = 0
+
+  local function create_floating_terminal()
+    local term_name = "Terminal " .. terminal_counter
+    terminal_counter = terminal_counter + 1
+
+    local term = Terminal:new({
+      direction = "float",
+      close_on_exit = true, -- Opcional, fecha o terminal quando o comando termina
+      -- Ajuste a configuração se necessário para minimizar a visibilidade do título
+    })
+    term:toggle()
+    term:open({ width = 0.8, height = 0.8, row = 0.1, col = 0.1 })
+    table.insert(terminals, term)
+    active_index = #terminals
+    -- Defina o nome do terminal usando `vim.api.nvim_buf_set_name`
+    vim.api.nvim_buf_set_name(term.bufnr, term_name)
+  end
+
+  local function create_vertical_terminal()
+    local term_name = "Terminal " .. terminal_counter
+    terminal_counter = terminal_counter + 1
+
+    local term = Terminal:new({
+      direction = "vertical",
+      close_on_exit = true, -- Opcional
+      -- Ajuste a configuração se necessário para minimizar a visibilidade do título
+    })
+    term:toggle()
+    table.insert(terminals, term)
+    active_index = #terminals
+    -- Defina o nome do terminal usando `vim.api.nvim_buf_set_name`
+    vim.api.nvim_buf_set_name(term.bufnr, term_name)
+  end
+
+  local function create_horizontal_terminal()
+    local term_name = "Terminal " .. terminal_counter
+    terminal_counter = terminal_counter + 1
+
+    local term = Terminal:new({
+      direction = "horizontal",
+      close_on_exit = true, -- Opcional
+      -- Ajuste a configuração se necessário para minimizar a visibilidade do título
+    })
+    term:toggle()
+    table.insert(terminals, term)
+    active_index = #terminals
+    -- Defina o nome do terminal usando `vim.api.nvim_buf_set_name`
+    vim.api.nvim_buf_set_name(term.bufnr, term_name)
+  end
+
+  local function create_tab_terminal()
+    local term_name = "Terminal " .. terminal_counter
+    terminal_counter = terminal_counter + 1
+
+    local term = Terminal:new({
+      direction = "tab",
+      close_on_exit = true, -- Opcional
+      -- Ajuste a configuração se necessário para minimizar a visibilidade do título
+    })
+    term:toggle()
+    table.insert(terminals, term)
+    active_index = #terminals
+    -- Defina o nome do terminal usando `vim.api.nvim_buf_set_name`
+    vim.api.nvim_buf_set_name(term.bufnr, term_name)
+  end
+
+  local function toggle_terminal_mode(direction)
+    local term = Terminal:new({ direction = direction })
+    term:toggle()
+  end
+
+  local function switch_next_terminal()
+    if #terminals == 0 then return end
+    active_index = (active_index % #terminals) + 1
+    terminals[active_index]:toggle()
+  end
+
+  local function switch_previous_terminal()
+    if #terminals == 0 then return end
+    active_index = (active_index - 2) % #terminals + 1
+    terminals[active_index]:toggle()
+  end
+
+  local function hide_terminal(term_id)
+    local term = terminals[term_id]
+    if term then
+      term:hide()
+    end
+  end
+
+  local function show_terminal(term_id)
+    local term = terminals[term_id]
+    if term then
+      term:toggle()
+    end
+  end
+
+  local function hide_all_terminals()
+    for _, term in ipairs(terminals) do
+      term:hide()
+    end
+  end
+
+  local function show_all_terminals()
+    for _, term in ipairs(terminals) do
+      term:toggle()
+    end
+  end
+
+  return {
+    create_floating_terminal = create_floating_terminal,
+    create_vertical_terminal = create_vertical_terminal,
+    create_horizontal_terminal = create_horizontal_terminal,
+    create_tab_terminal = create_tab_terminal,
+    toggle_terminal_mode = toggle_terminal_mode,
+    switch_next_terminal = switch_next_terminal,
+    switch_previous_terminal = switch_previous_terminal,
+    hide_terminal = hide_terminal,
+    show_terminal = show_terminal,
+    hide_all_terminals = hide_all_terminals,
+    show_all_terminals = show_all_terminals,
+  }
+end
+
+-- Função para fazer uma cópia profunda de uma tabela
+function deep_copy(orig)
+  local orig_type = type(orig)
+  local copy
+  if orig_type == 'table' then
+    copy = {}
+    for orig_key, orig_value in next, orig, nil do
+      copy[deep_copy(orig_key)] = deep_copy(orig_value)
+    end
+    setmetatable(copy, deep_copy(getmetatable(orig)))
+  else -- number, string, boolean, etc
+    copy = orig
+  end
+  return copy
+end
+
+function apply_borders(bufnr)
+  -- Obtém o ID da janela associada ao buffer
+end
+
 return {
   show_bufferline = show_bufferline,
   set_custom_colors = set_custom_colors,
@@ -235,4 +387,7 @@ return {
   update_nvim = update_nvim,
   uninstall_plugins = uninstall_plugins,
   commander_creator = commander_creator,
+  create_terminal = create_terminal,
+  deep_copy = deep_copy,
+  apply_borders = apply_borders
 }
