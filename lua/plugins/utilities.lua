@@ -34,20 +34,15 @@ return {
           title_pos = 'center',
           display_name = "",
         },
+
         winbar = {
           enabled = true,                 -- Disables the winbar (title bar) display
           name_formatter = function(term) --  term: Terminal
             return ""
           end,
-          highlight = {
-            active = { fg = "#ffffff", bg = "#1c1c1c" },
-            inactive = { fg = "#666666", bg = "#1c1c1c" }
-          }
+
         },
-        on_open = function(term)
-          -- Adiciona bordas quando o terminal é aberto
-          utils.apply_borders(term.bufnr)
-        end,
+
 
       }
     end

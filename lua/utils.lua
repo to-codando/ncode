@@ -238,13 +238,32 @@ local function create_terminal()
 
     local term = Terminal:new({
       direction = "float",
-      close_on_exit = true, -- Opcional, fecha o terminal quando o comando termina
-      -- Ajuste a configuração se necessário para minimizar a visibilidade do título
+      close_on_exit = true,
+      float_opts = {
+        border = 'curved', -- Ou 'single', 'double', 'shadow', conforme desejado
+        width = 0.8,
+        height = 0.8,
+        row = 0.1, -- Ajuste conforme necessário
+        col = 0.1, -- Ajuste conforme necessário
+      },
     })
+
+    -- Calcula o centro da tela
+    local screen_width = vim.o.columns
+    local screen_height = vim.o.lines
+    local term_width = math.floor(screen_width * 0.8)
+    local term_height = math.floor(screen_height * 0.8)
+
+    term.float_opts.width = term_width
+    term.float_opts.height = term_height
+    term.float_opts.row = math.floor((screen_height - term_height) / 2)
+    term.float_opts.col = math.floor((screen_width - term_width) / 2)
+
     term:toggle()
-    term:open({ width = 0.8, height = 0.8, row = 0.1, col = 0.1 })
+    term:open()
     table.insert(terminals, term)
     active_index = #terminals
+
     -- Defina o nome do terminal usando `vim.api.nvim_buf_set_name`
     vim.api.nvim_buf_set_name(term.bufnr, term_name)
   end
