@@ -65,6 +65,9 @@ wk.register({
 
   n = {
     name = "Buffer Navigation",
+    b = { function() require("buffer_manager.ui").toggle_quick_menu() end, "Escolher Buffer" },
+    j = { function() require('buffer_manage.ui').next_buffer() end, "Próximo Buffer" },
+    k = { function() require('buffer_manager.ui').prev_buffer() end, "Buffer Anterior" },
     ["p"] = { "<cmd>BufferLinePick<CR>", "Pick buffer and enter" },
     ["l"] = { "<cmd>BufferLineCycleNext<CR>", "Next buffer" },
     ["h"] = { "<cmd>BufferLineCyclePrev<CR>", "Previous buffer" },
