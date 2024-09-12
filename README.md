@@ -1,22 +1,3 @@
----
-description: Your new super lightweight and ultra-fast code editor.
-coverY: 0
-layout:
-  cover:
-    visible: false
-    size: full
-  title:
-    visible: true
-  description:
-    visible: false
-  tableOfContents:
-    visible: true
-  outline:
-    visible: true
-  pagination:
-    visible: true
----
-
 # Your new super lightweight and ultra-fast code editor.
 
 <figure><img src=".gitbook/assets/ncode-banner-2.png" alt="Ncode editor"><figcaption></figcaption></figure>
