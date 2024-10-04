@@ -47,3 +47,12 @@ nvim
 
 Close the terminal and open it again, and you're done. You've completed the installation.
 
+# How to Use
+
+Just press the spacebar on your keyboard, and a panel will appear. In this panel, key combinations are displayed next to a description.
+
+In the image below, simply press the key combination ``space + d + x``` to show linting errors in a panel that makes it easier to fix the issues in your code.
+
+All keymaps follow this logic.
+
+
