@@ -53,6 +53,8 @@ Just press the spacebar on your keyboard, and a panel will appear. In this panel
 
 In the image below, simply press the key combination ``space + d + x``` to show linting errors in a panel that makes it easier to fix the issues in your code.
 
+<figure><img src="https://gist.github.com/user-attachments/assets/f2953ca2-26ed-4a4c-8e39-aee30ee873cf" alt="Ncode editor"><figcaption></figcaption></figure>
+
 All keymaps follow this logic.
 
 
