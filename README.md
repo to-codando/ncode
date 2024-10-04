@@ -19,3 +19,31 @@ Stop suffering with slow editors! Ncode is simple, lightweight, and incredibly f
 Anyone who needs a fast, customizable editor. With thousands of plugins, you can easily set it up, even if you're new to Neovim and Lua. Ncode supports web, mobile, and desktop development.
 
 Ready for a smooth coding experience? Try Ncode today!
+
+# Where it works
+
+- Windows
+- Linux
+- Mac OS
+
+# Requirements
+
+- Neovim v10+
+- Node JS v18+
+
+### Instalation
+
+Just copy and paste into your terminal.
+
+```raw
+npx degit to-codando/codeNvim ~/.config/nvim
+```
+
+After cloning, open Neovim in the terminal to install the editor's dependencies.
+
+```raw
+nvim 
+```
+
+Close the terminal and open it again, and you're done. You've completed the installation.
+
