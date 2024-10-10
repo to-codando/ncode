@@ -1,4 +1,4 @@
-# Your new super lightweight and ultra-fast code editor.
+# Your new code editor.
 
 ![ncode 1](https://github.com/user-attachments/assets/7f965663-a54e-4a95-8901-e7c879a1c866)
 
