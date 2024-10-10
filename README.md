@@ -1,6 +1,6 @@
 # Your new super lightweight and ultra-fast code editor.
 
-<figure><img src=".gitbook/assets/ncode-banner-2.png" alt="Ncode editor"><figcaption></figcaption></figure>
+![ncode 1](https://github.com/user-attachments/assets/7f965663-a54e-4a95-8901-e7c879a1c866)
 
 #### Powers
 
@@ -53,7 +53,7 @@ Just press the spacebar on your keyboard, and a panel will appear. In this panel
 
 In the image below, simply press the key combination ``space + d + x``` to show linting errors in a panel that makes it easier to fix the issues in your code.
 
-<figure><img src="https://gist.github.com/user-attachments/assets/f2953ca2-26ed-4a4c-8e39-aee30ee873cf" alt="Ncode editor"><figcaption></figcaption></figure>
+![ncode-xxx](https://github.com/user-attachments/assets/bb603f22-b5fa-4fea-b9b3-a1d9b4fc4b47)
 
 All keymaps follow this logic.
 
