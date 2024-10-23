@@ -371,24 +371,20 @@ wk.register({
 }, { mode = "n", prefix = "<leader>t", name = "Text Motions" })
 
 wk.register({
-  m = {
-    name = "Move text",
-    ["j"] = { function() commander.register("<Plug>GoVLineDown") end, "Move Selected Lines Down" },
-    ["k"] = { function() commander.register("<Plug>GoVLineUp") end, "Move Selected Lines Up" },
-    ["h"] = { function() commander.register("<Plug>GoVLineLeft") end, "Move Selected Lines Left" },
-    ["l"] = { function() commander.register("<Plug>GoVLineRight") end, "Move Selected Lines Right" },
-  },
-  d = {
-    name = "Duplicate text",
-    ["j"] = { function() commander.register("<Plug>GoVDLineDown") end, "Duplicate Selected Lines Down" },
-    ["k"] = { function() commander.register("<Plug>GoVDLineUp") end, "Duplicate Selected Lines Up" },
-  }
-}, { mode = "v", prefix = "<leader>t", name = "Text Motions" })
-
+  -- Mapeamentos no modo visual
+  ["<S-h>"] = { "<Plug>GoVSMLeft", "Move Left" },
+  ["<S-j>"] = { "<Plug>GoVSMDown", "Move Down" },
+  ["<S-k>"] = { "<Plug>GoVSMUp", "Move Up" },
+  ["<S-l>"] = { "<Plug>GoVSMRight", "Move Right" },
+  ["<C-h>"] = { "<Plug>GoVSDLeft", "Duplicate leftwards" },
+  ["<C-j>"] = { "<Plug>GoVSDDown", "Duplicate downwards" },
+  ["<C-k>"] = { "<Plug>GoVSDUp", "Duplicate upwards" },
+  ["<C-l>"] = { "<Plug>GoVSDRight", "Duplicate rightwards" },
+}, { mode = { "n", "x" } })
 -- Mapeia a tecla para repetir o último comando
 wk.register({
   function() commander.repeat_last() end, "Repeat Last Motion"
-}, { mode = "n", prefix = ".", name = "Repeat Text Motion" })
+}, { mode = { "n", "x" }, prefix = ".", name = "Repeat Text Motion" })
 
 -- Registra os keymaps para o vim-visual-multi
 wk.register({
@@ -443,7 +439,7 @@ wk.register({
       "Select All Lines"
     }
   }
-}, { mode = "n", prefix = "<leader>", name = "Multi Cursor" })
+}, { mode = { "n", "x" }, prefix = "<leader>", name = "Multi Cursor" })
 
 -- Symbols Navigators
 
@@ -527,7 +523,7 @@ wk.register({
   name = "",           -- Group name
 })
 
-local mappings = {
+require('which-key').register({
   z = {
     name = "Terminal",
     f = { function() terminal.create_floating_terminal() end, "Floating Terminal" },
@@ -539,6 +535,4 @@ local mappings = {
     H = { function() terminal.hide_all_terminals() end, "Hide All Terminals" },
     S = { function() terminal.show_all_terminals() end, "Show All Terminals" },
   }
-}
-
-require('which-key').register(mappings, { prefix = "<leader>" })
+}, { prefix = "<leader>" })

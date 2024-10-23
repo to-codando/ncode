@@ -5,13 +5,11 @@ vim.g.mapleader = " "      -- Definir a tecla líder como espaço
 vim.g.maplocalleader = "," -- Definir a tecla líder local como vírgula (opcional)
 
 -- Aparência e Layout
-vim.opt.number = true         -- Mostrar números de linha
-vim.opt.relativenumber = true -- Números de linha relativos
-vim.opt.signcolumn = "yes"    -- Mostrar coluna de sinais
-vim.opt.colorcolumn = "80"    -- Linha vertical para largura de código
-vim.opt.cursorline = true     -- Destacar a linha do cursor
-vim.opt.wrap = false          -- Não quebrar linhas automaticamente
-vim.opt.linebreak = true      -- Quebrar linhas em palavras
+vim.opt.number = true          -- Mostrar números de linha
+vim.opt.relativenumber = false -- Números de linha relativos
+vim.opt.signcolumn = "yes"     -- Mostrar coluna de sinais
+vim.opt.colorcolumn = "80"     -- Linha vertical para largura de código
+vim.opt.cursorline = true      -- Destacar a linha do cursor
 
 -- Identação e Formatação
 vim.opt.tabstop = 2        -- Número de espaços para uma tabulação
@@ -20,7 +18,7 @@ vim.opt.expandtab = true   -- Usar espaços ao invés de tabs
 vim.opt.smartindent = true -- Indentação inteligente
 vim.opt.smarttab = true    -- Ajustar o tabstop ao número de espaços da indentação
 
-vim.opt.wrap = true
+--vim.opt.wrap = true
 vim.opt.breakindent = true
 vim.opt.showbreak = string.rep(" ", 3) -- Make it so that long lines wrap smartly
 vim.opt.linebreak = true
