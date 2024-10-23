@@ -1,25 +1,6 @@
----
-description: Your new super lightweight and ultra-fast code editor.
-coverY: 0
-layout:
-  cover:
-    visible: false
-    size: full
-  title:
-    visible: true
-  description:
-    visible: false
-  tableOfContents:
-    visible: true
-  outline:
-    visible: true
-  pagination:
-    visible: true
----
+# Your new code editor.
 
-# Your new super lightweight and ultra-fast code editor.
-
-<figure><img src=".gitbook/assets/ncode-banner-2.png" alt="Ncode editor"><figcaption></figcaption></figure>
+![ncode 1](https://github.com/user-attachments/assets/7f965663-a54e-4a95-8901-e7c879a1c866)
 
 #### Powers
 
@@ -38,3 +19,42 @@ Stop suffering with slow editors! Ncode is simple, lightweight, and incredibly f
 Anyone who needs a fast, customizable editor. With thousands of plugins, you can easily set it up, even if you're new to Neovim and Lua. Ncode supports web, mobile, and desktop development.
 
 Ready for a smooth coding experience? Try Ncode today!
+
+# Where it works
+
+- Windows
+- Linux
+- Mac OS
+
+# Requirements
+
+- Neovim v10+
+- Node JS v18+
+
+### Instalation
+
+Just copy and paste into your terminal.
+
+```raw
+npx degit to-codando/codeNvim ~/.config/nvim
+```
+
+After cloning, open Neovim in the terminal to install the editor's dependencies.
+
+```raw
+nvim 
+```
+
+Close the terminal and open it again, and you're done. You've completed the installation.
+
+# How to Use
+
+Just press the spacebar on your keyboard, and a panel will appear. In this panel, key combinations are displayed next to a description.
+
+In the image below, simply press the key combination ``space + d + x``` to show linting errors in a panel that makes it easier to fix the issues in your code.
+
+![ncode-xxx](https://github.com/user-attachments/assets/bb603f22-b5fa-4fea-b9b3-a1d9b4fc4b47)
+
+All keymaps follow this logic.
+
+
