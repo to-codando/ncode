@@ -53,11 +53,11 @@ return {
       end
 
       -- Configura ícones
-      if debuggers_config.signs then
-        for name, sign in pairs(debuggers_config.signs) do
-          vim.fn.sign_define(name, sign)
-        end
-      end
+      -- if debuggers_config.signs then
+      --   for name, sign in pairs(debuggers_config.signs) do
+      --    vim.fn.sign_define(name, sign)
+      -- end
+      -- end
     end,
   },
 
@@ -91,4 +91,3 @@ return {
 
   -- Aqui você pode adicionar outros plugins fixos ou essenciais se necessário
 }
-

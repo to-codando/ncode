@@ -70,7 +70,7 @@ return {
           },
         },
         messages = {
-          enabled = true,  -- Exibe mensagens de erro
+          enabled = false, -- Exibe mensagens de erro
           view = "notify", -- Redireciona mensagens para o nvim-notify
         },
         notify = {
@@ -85,7 +85,12 @@ return {
     name = "catppuccin",
     config = function()
       require("catppuccin").setup({
-        flavour = "mocha",   -- Escolha o sabor: latte, frappe, macchiato, mocha
+        flavour = "auto", -- latte, frappe, macchiato, mocha
+        background = {    -- :h background
+          light = "latte",
+          dark = "mocha",
+        },
+        transparent_background = false,
         integrations = {
           bufferline = true, -- Habilite a integração com bufferline
           notify = true,
@@ -94,6 +99,10 @@ return {
           dashboard = true,
           cmp = true,
           dap = {
+            enabled = true, -- Habilite a integração com o DAP
+            -- Personalize a aparência do DAP aqui
+          },
+          telescope = {
             enabled = true, -- Habilite a integração com o DAP
             -- Personalize a aparência do DAP aqui
           },

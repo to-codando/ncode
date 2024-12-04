@@ -1,17 +1,17 @@
 -- ~/.config/nvim/lua/plugins/code_tools.lua
 
-local user_settings_path = vim.fn.stdpath("config") .. "/settings.lua"
-local user_settings = loadfile(user_settings_path)() or {}
+local custom_settings_path = vim.fn.stdpath("config") .. "/settings.lua"
+local custom_settings = loadfile(custom_settings_path)() or {}
 local default_diagnostics = require("diagnostics")
 local default_lsps = require("lsps")
 local utils = require("utils")
 
 local lsps_config = vim.deepcopy(default_lsps)
-utils.merge_tables(lsps_config, user_settings.lsps or {})
+utils.merge_tables(lsps_config, custom_settings.lsps or {})
 
 -- Mescla configurações padrão e do usuário
 local diagnostics_config = vim.deepcopy(default_diagnostics)
-utils.merge_tables(diagnostics_config, user_settings.diagnostics or {})
+utils.merge_tables(diagnostics_config, custom_settings.diagnostics or {})
 
 local function apply_config(server, opts)
   local lspconfig = require("lspconfig")
@@ -40,14 +40,9 @@ end
 
 -- Função para aplicar configurações gerais de diagnósticos
 local function apply_diagnostics_settings()
-  local settings_signs = diagnostics_config.settings.signs_define
-  -- Configura sinais de diagnósticos
-  for name, sign in pairs(settings_signs) do
-    vim.fn.sign_define(name, sign)
-  end
-
-  -- Aplica as configurações gerais de diagnóstico
-  vim.diagnostic.config(diagnostics_config.settings)
+  local settings = vim.tbl_extend('force', default_diagnostics.settings, custom_settings.diagnostics)
+  print(vim.inspect(settings))
+  vim.diagnostic.config(settings)
 end
 
 
@@ -189,7 +184,7 @@ local function setup_autocmds()
     group = group,
     pattern = "*",
     callback = function()
-      if vim.lsp.buf_get_clients() then
+      if vim.lsp.get_clients() then
         vim.lsp.buf.format({ async = false })
       end
     end,

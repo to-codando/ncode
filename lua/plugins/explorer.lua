@@ -9,7 +9,7 @@ return {
           side = "left",
         },
         renderer = {
-          group_empty = true,
+          group_empty = false,
           highlight_opened_files = "all",
           root_folder_label = false,
           icons = {
@@ -21,9 +21,7 @@ return {
             },
           },
         },
-        filters = {
-          custom = { "node_modules", ".cache", "dist", "*.tmp", "*.swp", "*.bak" }, -- Adicione aqui os padrões de arquivos e diretórios a serem ocultados
-        },
+
 
       })
     end

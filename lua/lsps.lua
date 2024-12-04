@@ -10,7 +10,6 @@ return {
   settings = {
     html = {},
     cssls = {},
-
     lua_ls = {},
     emmet_ls = {
       filetypes = { "html", "css", "javascript", "typescript", "javascriptreact", "typescriptreact", "php", "angular", "vue", "svelte" }, -- Adicione ou remova conforme necessário

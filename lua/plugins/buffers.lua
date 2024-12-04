@@ -47,8 +47,6 @@ return {
           left_trunc_marker = " ",
           right_trunc_marker = " ",
 
-
-
           -- Opcional: define se a barra de buffers deve sempre ser exibida
           always_show_bufferline = true, -- define como false para ocultar quando houver um único buffer
 

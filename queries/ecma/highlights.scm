@@ -43,10 +43,6 @@
 
 (statement_identifier) @label
 
-(glimmer_opening_tag) @tag.builtin
-
-(glimmer_closing_tag) @tag.builtin
-
 ; Function and method definitions
 ;--------------------------------
 (function_expression
@@ -131,11 +127,6 @@
 ;------------
 (new_expression
   constructor: (identifier) @constructor)
-
-; Variables
-;----------
-(namespace_import
-  (identifier) @module)
 
 ; Decorators
 ;----------
@@ -301,6 +292,19 @@
     "${"
     "}"
   ] @punctuation.special) @none
+
+; Imports
+;----------
+(namespace_import
+  "*" @character.special
+  (identifier) @module)
+
+(namespace_export
+  "*" @character.special
+  (identifier) @module)
+
+(export_statement
+  "*" @character.special)
 
 ; Keywords
 ;----------

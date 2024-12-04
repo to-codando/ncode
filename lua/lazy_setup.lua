@@ -1,6 +1,6 @@
 -- ~/.config/nvim/lua/lazy.lua
 
--- Cheque se lazy.nvim está instalado, se não, instale-o
+-- Verifique se lazy.nvim está instalado; senão, instale-o
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -8,28 +8,41 @@ if not vim.loop.fs_stat(lazypath) then
     "clone",
     "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable",     -- latest stable release
+    "--branch=stable", -- versão estável mais recente
     lazypath,
   })
 end
 vim.opt.rtp:prepend(lazypath)
 
-
--- Função para carregar plugins dinamicamente
-local function load_plugins()
+-- Função para carregar plugins de um diretório
+local function load_plugins(path)
   local plugins = {}
-  local plugin_files = vim.fn.globpath(vim.fn.stdpath('config') .. '/lua/plugins', '*.lua', false, true)
+  local plugin_files = vim.fn.globpath(path, '*.lua', false, true)
   for _, file in ipairs(plugin_files) do
-    --    print("Loading plugin: " .. file)  -- Adicione esta linha para depuração
+    print("Loading plugin: " .. file) -- Linha para depuração
     local plugin = dofile(file)
-    table.insert(plugins, plugin)
+    if type(plugin) == 'table' then
+      table.insert(plugins, plugin)
+    else
+      print("Invalid plugin specification in: " .. file)
+    end
   end
   return plugins
 end
 
--- Configure lazy.nvim
-print("Configuring lazy.nvim") -- Adicione esta linha para depuração
+-- Diretórios de plugins
+local default_plugins_dir = vim.fn.stdpath('config') .. '/lua/plugins'
+local custom_plugins_dir = vim.fn.stdpath('config') .. '/setup/plugins'
+
+-- Carregue os plugins de cada diretório
+local default_plugins_loaded = load_plugins(default_plugins_dir)
+local custom_plugins_loaded = load_plugins(custom_plugins_dir)
+
+-- Combine os plugins carregados em uma única tabela
+local plugins_combined = vim.list_extend(default_plugins_loaded, custom_plugins_loaded)
+
+-- Configure lazy.nvim com a tabela combinada de plugins
+print("Configuring lazy.nvim") -- Linha para depuração
 require('lazy').setup({
-  spec = load_plugins(),
+  spec = plugins_combined
 })
---print("lazy.nvim configured")  -- Adicione esta linha para depuração
