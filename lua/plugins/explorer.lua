@@ -21,8 +21,9 @@ return {
             },
           },
         },
-
-
+        filters = {
+          custom = { "*~$", "^.git$" },
+        },
       })
     end
   },

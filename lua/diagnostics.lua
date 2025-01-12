@@ -17,11 +17,11 @@ return {
       header = "",
       prefix = "",
     },
-    signs_define = {
-      DiagnosticSignError = { text = "", texthl = "DiagnosticSignError" },
-      DiagnosticSignWarn = { text = "󰗖", texthl = "DiagnosticSignWarn" },
-      DiagnosticSignInfo = { text = "", texthl = "DiagnosticSignInfo" },
-      DiagnosticSignHint = { text = "󱩎", texthl = "DiagnosticSignHint" },
+    signs = {
+      { name = "DiagnosticSignError", text = "", texthl = "DiagnosticSignError" },
+      { name = "DiagnosticSignWarn", text = "󰗖", texthl = "DiagnosticSignWarn" },
+      { name = "DiagnosticSignInfo", text = "", texthl = "DiagnosticSignInfo" },
+      { name = "DiagnosticSignHint", text = "󱩎", texthl = "DiagnosticSignHint" },
     },
   },
   languages = {

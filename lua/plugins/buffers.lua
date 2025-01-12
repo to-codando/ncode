@@ -37,10 +37,7 @@ return {
           right_mouse_command = "bdelete! %d",
           left_mouse_command = "buffer %d",
           middle_mouse_command = nil,
-          indicator = {
-            icon = '▎',
-            style = 'icon',
-          },
+
           buffer_close_icon = '✖',
           modified_icon = "● ",
           close_icon = '✖',
@@ -67,7 +64,7 @@ return {
           show_buffer_close_icons = true,
           show_close_icon = true,
           show_tab_indicators = true,
-          separator_style = 'slant',
+          separator_style = 'none',
           enforce_regular_tabs = false,
           hover = {
             enabled = true,
@@ -75,7 +72,9 @@ return {
             reveal = { 'close' }
           },
           sort_by = 'insert_after_current',
-        }
+
+        },
+
       }
     end,
   },

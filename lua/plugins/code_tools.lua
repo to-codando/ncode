@@ -41,7 +41,12 @@ end
 -- Função para aplicar configurações gerais de diagnósticos
 local function apply_diagnostics_settings()
   local settings = vim.tbl_extend('force', default_diagnostics.settings, custom_settings.diagnostics)
-  print(vim.inspect(settings))
+  --print(vim.inspect(settings))
+  --
+  for _, sign in ipairs(settings.signs) do
+    vim.fn.sign_define(sign.name, { text = sign.text, texthl = sign.texthl })
+  end
+
   vim.diagnostic.config(settings)
 end
 

@@ -21,7 +21,7 @@ return {
   diagnostics = {
     -- settings = {
     -- virtual_text = false,
-    signs = true,
+    --signs = true,
     -- update_in_insert = false,
     -- underline = true,
     -- severity_sort = true,
@@ -33,11 +33,11 @@ return {
     -- header = "",
     -- prefix = ""
     -- },
-    signs_define = {
-      DiagnosticSignError = { trxt = "", texthl = "DiagnosticSignError" },
-      DiagnosticSignWarn = { text = "󰗖", texthl = "DiagnosticSignWarn" },
-      DiagnosticSignInfo = { text = "", texthl = "DiagnosticSignInfo" },
-      DiagnosticSignHint = { text = "󱩎", texthl = "DiagnosticSignHint" },
+    signs = {
+      { name = "DiagnosticSignError", text = "", texthl = "DiagnosticSignError" },
+      { name = "DiagnosticSignWarn", text = "󰗖", texthl = "DiagnosticSignWarn" },
+      { name = "DiagnosticSignInfo", text = "", texthl = "DiagnosticSignInfo" },
+      { name = "DiagnosticSignHint", text = "󱩎", texthl = "DiagnosticSignHint" },
     },
   },
   -- languages = {

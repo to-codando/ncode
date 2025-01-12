@@ -19,7 +19,7 @@ local function load_plugins(path)
   local plugins = {}
   local plugin_files = vim.fn.globpath(path, '*.lua', false, true)
   for _, file in ipairs(plugin_files) do
-    print("Loading plugin: " .. file) -- Linha para depuração
+    -- print("Loading plugin: " .. file) -- Linha para depuração
     local plugin = dofile(file)
     if type(plugin) == 'table' then
       table.insert(plugins, plugin)
@@ -42,7 +42,7 @@ local custom_plugins_loaded = load_plugins(custom_plugins_dir)
 local plugins_combined = vim.list_extend(default_plugins_loaded, custom_plugins_loaded)
 
 -- Configure lazy.nvim com a tabela combinada de plugins
-print("Configuring lazy.nvim") -- Linha para depuração
+--print("Configuring lazy.nvim") -- Linha para depuração
 require('lazy').setup({
   spec = plugins_combined
 })
