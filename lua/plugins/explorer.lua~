@@ -1,7 +1,6 @@
 return {
   {
     "nvim-tree/nvim-tree.lua",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       local nvimtree = require("nvim-tree")
       nvimtree.setup({
@@ -13,7 +12,6 @@ return {
           update_cwd = true,
         },
         view = {
-          adaptive_size = true,
           width = 30, -- Define a largura da árvore de arquivos
           side = "left",
         },
